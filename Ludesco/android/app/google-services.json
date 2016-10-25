@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "189213563603",
+    "firebase_url": "https://test-72e43.firebaseio.com",
+    "project_id": "test-72e43",
+    "storage_bucket": "test-72e43.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:189213563603:android:faf888aeacda1985",
+        "android_client_info": {
+          "package_name": "com.ludesco"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "189213563603-h4kvlh8inmjca0938p9ctipgqb53fd78.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALeMd5ximfOVJSzuf04e4A0D4Y31RYILk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
