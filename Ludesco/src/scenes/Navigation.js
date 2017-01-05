@@ -2,8 +2,9 @@ import React, { Component, PropTypes} from 'react';
 import { View, Text, Image, ScrollView } from 'react-native';
 import Checkbox from '../components/checkbox';
 import { Avatar, Drawer, Divider, COLOR, TYPO, PRIMARY_COLORS } from 'react-native-material-design';
-import store from '../state/container';
+import store,{isConnected} from '../state/container';
 import { fetchJSON } from '../util/http';
+import { loadReservations,loadCustomGames, login, loadDevice } from '../actions/actions';
 
 export default class Navigation extends Component {
     constructor(props) {
@@ -17,7 +18,9 @@ export default class Navigation extends Component {
           .then((categories) => {
             let cat = categories.map((c) => [c.name, true]);
             this.setState({categories: cat});
-          })
+          });
+
+        store.dispatch(loadDevice());
     }
 
     toggleCategory(check, value) {
@@ -43,6 +46,11 @@ export default class Navigation extends Component {
         this.setState({
             route: route
         });
+        if(route.title=='myreservations' && isConnected()) {
+          store.dispatch(loadReservations());
+        } else if(route.title=='customGames') {
+          store.dispatch(loadCustomGames());
+        }
         this.props.navigator.push(route);
         drawer.closeDrawer();
     };
@@ -58,44 +66,23 @@ export default class Navigation extends Component {
                 <Drawer.Section
                     items={[{
                         icon: 'list',
-                        value: 'Programme complet',
+                        value: 'Programme',
                         label: '12',
-                        active: !route || route === 'programme',
+                        active: route === 'programme',
                         onPress: () => this.changeScene('welcome'),
-                        onLongPress: () => this.changeScene('welcome')
-                    },{
-                        icon: 'date-range',
-                        value: 'Vendredi',
-                        label: '12',
-                        active: !route || route === 'programme',
-                        onPress: () => this.changeScene({path : 'welcome', day: 5}),
-                        onLongPress: () => this.changeScene('welcome')
-                    },{
-                        icon: 'date-range',
-                        value: 'Samedi',
-                        label: '12',
-                        active: false,
-                        onPress: () => this.changeScene({path:'welcome', day: 6 }),
-                        onLongPress: () => this.changeScene('welcome')
-                    },{
-                        icon: 'date-range',
-                        value: 'Dimanche',
-                        label: '12',
-                        active: false,
-                        onPress: () => this.changeScene({path:'welcome', day: 0}),
                         onLongPress: () => this.changeScene('welcome')
                     }, {
                         icon: 'date-range',
                         value: 'Mes réservations',
                         labels: '12',
-                        active: false,
+                        active: route === 'myreservations',
                         onPress: () => this.changeScene({title:'myreservations'}),
                         onLongPress: () => this.changeScene({title:'myreservations'})
                     }, {
                         icon: 'date-range',
-                        value: 'Programme joueurs 12',
+                        value: 'Programme joueurs',
                         labels: '12',
-                        active: false,
+                        active: route === 'customGames',
                         onPress: () => this.changeScene({title:'customGames'})
                     }]}
                 />

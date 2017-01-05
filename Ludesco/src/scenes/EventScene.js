@@ -9,53 +9,23 @@ import styles from '../components/styles';
 var HTMLView = require('react-native-htmlview');
 
 export default class EventScene extends Component {
-  constructor(props) {
-    super(props);
-    const { navigator, id} = this.props;
-
-    this.state = {event: {}, modalVisible: false, loginModalVisible: false};
-
-    fetchJSON(`public/events/${id}`).then((event) => {
-      this.setState({event});
-    });
-  }
-  setModalVisible(visible) {
-    this.setState({modalVisible: visible});
-  }
-  setLoginModalVisible(visible) {
-    this.setState({loginModalVisible: visible});
-  }
-  subscribe() {
-    this.setModalVisible(false);
-  }
-  askSubscribe() {
-    if(isConnected()) {
-      this.setModalVisible(true);
-    } else {
-      this.setLoginModalVisible(true);
-    }
-  }
   render() {
-    const { event, loginModalVisible } = this.state;
+    const { event, loginModalVisible, modalVisible, text } = this.props;
+    if(!event) return (<View></View>);
     let cardButtons;
     if(event.hasinscriptions) {
-      cardButtons = <Card.Actions position="right">
-                      <View style={styles.cardActions}>
-                        <Text style={styles.cardText}>{event.participants} / {event.ticket_spaces}</Text>
-                        <Button style={styles.cardButton} text="S'INSCRIRE" onPress={() => this.askSubscribe()} />
-                      </View>
-                    </Card.Actions>
+      cardButtons = <TakePart event={event} askSubscribe={this.props.askSubscribe} />
     }
     return (<ScrollView style={styles.scrollView}>
-      <LoginModal loginModalVisible={loginModalVisible} />
-      <Modal animationType={"fade"} transparent={true} visible={this.state.modalVisible} onRequestClose={() => {alert("Modal has been closed.")}} >
+      <LoginModal modalVisible={loginModalVisible} />
+      <Modal animationType={"fade"} transparent={true} visible={modalVisible} onRequestClose={() => {alert("Modal has been closed.")}} >
         <View style={{height:100, flex:1, alignItems:'center', flexDirection:'row', justifyContent:'center'}}>
           <View style={{backgroundColor: 'white',paddingLeft:24, paddingRight:24,paddingTop: 22}}>
             <Text style={{marginTop:24,marginBottom:20, fontWeight: 'bold'}}>Inscription à une partie</Text>
             <TextInput
               style={{height: 40, borderColor: 'gray', borderWidth: 1}}
               onChangeText={(text) => this.setState({text})}
-              value={this.state.text} />
+              value={text} />
             <View style={{marginTop:24, paddingTop:8, height:52}}>
               <View style={styles.cardActions}>
                 <Button style={{width:20}} text="S'INSCRIRE" onPress={() => {this.subscribe()}} />
@@ -76,13 +46,21 @@ export default class EventScene extends Component {
   }
 }
 
+class TakePart extends Component {
+  render() {
+    const {event} = this.props;
+    return <Card.Actions position="right">
+            <View style={styles.cardActions}>
+              <Text style={styles.cardText}>{event.participants} / {event.ticket_spaces}</Text>
+              <Button style={styles.cardButton} text="S'INSCRIRE" onPress={() => this.props.askSubscribe()} />
+            </View>
+          </Card.Actions>;
+  }
+}
+
 class AddInscriptionModal extends Component {
   constructor(props) {
     super(props);
-    this.state = {modalVisible: false};
-  }
-  setModalVisible(visible) {
-    this.setState({modalVisible: visible});
   }
   render() {
     return ( <View style={{marginTop: 22}}>

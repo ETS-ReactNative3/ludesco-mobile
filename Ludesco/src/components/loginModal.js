@@ -1,46 +1,38 @@
 import React, { Component, PropTypes } from 'react';
-import { Text, View, TextInput } from 'react-native';
-import { InputModal } from './inputModal'
+import { Text, View, TextInput, Modal } from 'react-native';
 import styles from './styles';
+import { Card, Button } from 'react-native-material-design';
 
 export class LoginModal extends Component {
   constructor(props) {
     super(props);
-    this.state = {modalVisible: false};
   }
-  doConnect() {
-
+  onChangeText(name, value) {
+    this.setState({[name]:value});
   }
   render() {
-    const { loginModalVisible } = this.props;
-    const buttons = [{
-                      text: "Annuler",
-                      onPress: () => this.setState({modalVisible: false})
-                    },
-                    {
-                      text: "Se connecter",
-                      onPress: () => this.doConnect()
-                    }];
+    const { modalVisible } = this.props;
     return (<View>
-      <InputModal transparent={true} modalStyle={{flex:1,flexDirection:'column',alignItems:'center',justifyContent:'center',height:200}} buttons={buttons} modalVisible={loginModalVisible} onModalClose={() => {}} title="Créer une partie">
-        <View style={styles.inputBloc}>
-          <Text style={styles.label}>
-            Utilisateur
-          </Text>
-          <TextInput
-            style={styles.inputText}
-            onChangeText={(value) => this.onChangeText('name', value)} />
+        <Modal animationType="fade" transparent={true} visible={modalVisible} onRequestClose={() => {}} title="Connexion">
+        <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
+          <View style={{width:300,backgroundColor:'green'}}>
+            <Text>
+              Utilisateur
+            </Text>
+            <TextInput
+              onChangeText={(value) => this.onChangeText('username', value)} />
+            <Text>
+              Mot de passe
+            </Text>
+            <TextInput
+              secureTextEntry={true}
+              onChangeText={(value) => this.onChangeText('password', value)} />
+              <View>
+                <Button style={{width: 20}} text="Se connecter" onPress={() => this.props.doConnect(this.state)} />
+              </View>
+          </View>
         </View>
-        <View style={styles.inputBloc}>
-          <Text style={styles.label}>
-            Mot de passe
-          </Text>
-          <TextInput
-            secureTextEntry={true}
-            style={styles.inputText}
-            onChangeText={(value) => this.onChangeText('type', value)} />
-        </View>
-      </InputModal>
-           </View>);
+      </Modal>
+    </View>);
   }
 }

@@ -23,19 +23,17 @@ export class InputModal extends Component {
       return <Button key={i} style={{width: 20}} text={b.text} onPress={b.onPress} />
     });
     return (<Modal animationType={"fade"} transparent={tr} visible={modalVisible} onRequestClose={() => onModalClose()} >
-      <View>
-        <View style={ms}>
-          <ScrollView>
-          <View style={styles.modalContent}>
-            <Text style={styles.title}>{title}</Text>
-            {this.props.children}
-            <View style={styles.cardActions}>
-              {btns}
-            </View>
+        <ScrollView>
+        <View style={styles.modalView}>
+        <View style={styles.modalContent}>
+          <Text style={styles.title}>{title}</Text>
+          {this.props.children}
+          <View style={styles.cardActions}>
+            {btns}
           </View>
-          </ScrollView>
         </View>
-      </View>
+        </View>
+        </ScrollView>
     </Modal>);
   }
 }
@@ -43,7 +41,8 @@ export class InputModal extends Component {
 const styles = StyleSheet.create({
   modalView : {
     flex: 1,
-    flexDirection: 'column'
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   modalContent : {
     backgroundColor: 'white',
