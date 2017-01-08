@@ -35,6 +35,7 @@ export function loadReservations() {
     dispatch({type: 'FETCH_RESERVATIONS_REQUEST'});
     return fetchJSON(`public/secured/users/${user.id}/reservations/${idFestival}`,{method:'GET',headers:headers(user)}).then((reservations) => {
       dispatch({type:'FETCH_RESERVATIONS_SUCCESS', reservations: reservations});
+      return reservations;
     }).catch((e) => {
       console.error(e);
     });
@@ -67,6 +68,32 @@ export function subscribeCustomGame(subscription) {
       method: 'POST',
       body : json,
       headers : defaultHeaders
+    });
+  }
+}
+
+export function subscribeEvent(subscription) {
+  const {event_id, user_id} = subscription;
+  var json = JSON.stringify(subscription);
+  return (dispatch, getState) => {
+    const {user} = getState();
+    return fetchJSON(`public/secured/users/${user_id}/events/${event_id}/subscribe`, {
+      method : 'POST',
+      body : json,
+      headers : headers(user)
+    });
+  }
+}
+
+export function unsubscribeEvent(subscription) {
+  const {event_id, user_id} = subscription;
+  var json = JSON.stringify(subscription);
+  return (dispatch, getState) => {
+    const {user} = getState();
+    return fetchJSON(`public/secured/users/${user_id}/events/${event_id}/unsubscribe`, {
+      method : 'POST',
+      body : json,
+      headers : headers(user)
     });
   }
 }

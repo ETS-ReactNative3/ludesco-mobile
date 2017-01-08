@@ -9,15 +9,29 @@ const base64 = require('base-64');
 var moment = require('moment');
 
 export default class MyReservationsScene extends Component {
+  constructor(props) {
+    super(props);
+    const {isConnected} = props;
+    this.state = {
+      loginModalVisible : !isConnected
+    }
+  }
+  doConnect(user) {
+    const {doConnect} = this.props;
+    doConnect(user).then(() => {
+      this.closeLoginModal();
+    });
+  }
+  closeLoginModal() {
+    this.setState({loginModalVisible : false});
+  }
   render() {
     const {
-      text,
       reservations,
-      loginModalVisible,
-      onChangeText,
-      closeModal,
-      doConnect,
-      onReservationPress} = this.props;
+      onReservationPress,
+      close
+    } = this.props;
+    const { loginModalVisible } = this.state;
 
     let childrens;
     if(reservations.length>0) {
@@ -28,7 +42,10 @@ export default class MyReservationsScene extends Component {
 
 
     return <ScrollView style={{marginTop: 70}}>
-        <LoginModal closeModal={closeModal} doConnect={doConnect} onChangeText={onChangeText} modalVisible={loginModalVisible} />
+        <LoginModal
+          onRequestClose={close}
+          doConnect={(user) => this.doConnect(user)}
+          modalVisible={loginModalVisible} />
         {childrens}
         </ScrollView>
   }
@@ -36,7 +53,7 @@ export default class MyReservationsScene extends Component {
 
 class NoReservation extends Component {
   render() {
-    return <Text style={{marginLeft:24}}>Vous n'avez pour l'heure effectuer aucune réservation</Text>
+    return <Text style={{marginLeft:24}}>{"Vous n'avez pour l'heure effectué aucune réservation"}</Text>
   }
 }
 

@@ -4,6 +4,11 @@ import styles from './styles';
 import { Card, Button } from 'react-native-material-design';
 
 export class LoginModal extends Component {
+  static propTypes = {
+    doConnect: React.PropTypes.func.isRequired,
+    onRequestClose: React.PropTypes.func.isRequired,
+    modalVisible: React.PropTypes.bool.isRequired,
+  }
   constructor(props) {
     super(props);
   }
@@ -11,11 +16,11 @@ export class LoginModal extends Component {
     this.setState({[name]:value});
   }
   render() {
-    const { modalVisible } = this.props;
+    const { modalVisible, doConnect, onRequestClose } = this.props;
     return (<View>
-        <Modal animationType="fade" transparent={true} visible={modalVisible} onRequestClose={() => {}} title="Connexion">
+        <Modal animationType="fade" transparent={true} visible={modalVisible} onRequestClose={onRequestClose} title="Connexion">
         <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
-          <View style={{width:300,backgroundColor:'green'}}>
+          <View style={{width:300,backgroundColor:'white'}}>
             <Text>
               Utilisateur
             </Text>
@@ -28,7 +33,7 @@ export class LoginModal extends Component {
               secureTextEntry={true}
               onChangeText={(value) => this.onChangeText('password', value)} />
               <View>
-                <Button style={{width: 20}} text="Se connecter" onPress={() => this.props.doConnect(this.state)} />
+                <Button style={{width: 20}} text="Se connecter" onPress={() => doConnect(this.state)} />
               </View>
           </View>
         </View>

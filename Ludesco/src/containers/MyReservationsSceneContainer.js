@@ -10,8 +10,7 @@ const mapStateToProps = (state, ownProps) => {
   const orderedReservations = state.reservations.sort(sortReservation);
   return {
     reservations: orderedReservations,
-    text: '',
-    loginModalVisible: !isConnected(),
+    isConnected : isConnected(),
     user : state.user
   }
 }
@@ -19,16 +18,16 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch, ownProps) => {
   const { navigator } = ownProps;
   return {
-    closeModal() {
-
-    },
     doConnect(user) {
-      dispatch(login(user)).then(() => dispatch(loadReservations()));
+        return dispatch(login(user)).then(() => dispatch(loadReservations()));
     },
     onReservationPress(reservation) {
-      dispatch(loadEvent(reservation.event_id)).then(() => {
+      return dispatch(loadEvent(reservation.event_id)).then(() => {
         navigator.push({title:'event', id:reservation.event_id});
-      })
+      });
+    },
+    close() {
+      navigator.pop();
     }
   }
 }

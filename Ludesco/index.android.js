@@ -15,15 +15,14 @@ import {
   TextInput,
   Button
 } from 'react-native';
-import { Toolbar, Subheader, } from 'react-native-material-design';
-import { Avatar, Drawer, Divider, COLOR, TYPO } from 'react-native-material-design';
+import { Toolbar, Subheader, Avatar, Drawer, Divider, COLOR, TYPO } from 'react-native-material-design';
+import { Provider } from 'react-redux';
 import Navigation from './src/scenes/Navigation.js';
 import ProgrammeSceneContainer from './src/containers/ProgrammeSceneContainer.js';
 import EventSceneContainer from './src/containers/EventSceneContainer.js';
 import MyReservationsSceneContainer from './src/containers/MyReservationsSceneContainer.js';
 import CustomGamesSceneContainer from './src/containers/CustomGamesSceneContainer.js';
 import FCM from 'react-native-fcm';
-import { Provider } from 'react-redux';
 import store from './src/state/container.js'
 
 var navigator;
@@ -50,7 +49,6 @@ class Ludesco extends Component {
     this.state = {drawer: null, navigator: null, modalVisible: false, notification: {}};
   }
   onIconPressA() {
-    //const { drawer } = this.state;
     this.state.drawer.openDrawer();
   }
   setDrawer(drawer) {
@@ -69,7 +67,7 @@ class Ludesco extends Component {
                                     drawerPosition={DrawerLayoutAndroid.positions.Left}
                                     renderNavigationView={() => <Navigation ref={(navigation) => this.state.navigation ? this.setNavigation(navigation) : null} navigator={navigator} drawer={this.state.drawer} />}
                                     ref={(drawer) => {!this.state.drawer ? this.setDrawer(drawer) : null}}>
-                <Modal animationType={"fade"} transparent={false} visible={this.state.modalVisible} onRequestClose={() => this.setState({modalVisible: false})}>
+                <Modal animationType={"fade"} transparent={true} visible={this.state.modalVisible} onRequestClose={() => this.setState({modalVisible: false})}>
                   <View style={{height:100, flex:1, alignItems:'center', flexDirection:'row', justifyContent:'center'}}>
                     <View>
                       <Text>{title}</Text>
@@ -95,10 +93,6 @@ class Ludesco extends Component {
                   configureScene={(route, routeStack) => Navigator.SceneConfigs.FloatFromBottom}
                   ref={(navigator) => { !this.state.navigator ? this.setNavigator(navigator) : null }}
                   navigationBar={<Toolbar navigator={this.state.navigator} title="Ludesco" onIconPress={() => this.onIconPressA()}
-                          actions={[{
-                              icon: 'warning',
-                              badge: { value: 0, animate: true }
-                          }]}
                           icon='menu'
                           rightIconStyle={{
                               margin: 10

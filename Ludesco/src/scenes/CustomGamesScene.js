@@ -52,7 +52,8 @@ export default class CustomGamesScene extends Component {
       game: {
         nbplayers : "3",
         duration : "30-60",
-        start : fmtNow()
+        start : fmtNow(),
+        weare : 1
       },
       subscription : {
 
@@ -158,7 +159,7 @@ class SubscribeModal extends Component {
         title = "Ca m'intéresse";
         buttons = [{
                           text: "S'INSCRIRE",
-                          onPress: () => subscribe(subscription).then(onClose)
+                          onPress: () => subscribe({game_id:selectedGame.id,device:device,weare:subscription.weare}).then(onClose)
                        },
                        {
                           text: "ANNULER",
@@ -170,9 +171,6 @@ class SubscribeModal extends Component {
             modalVisible={visible}
             onModalClose={onClose}
             title={title}>
-              <Text style={styles.label}>
-                Nous sommes
-              </Text>
               <WeArePicker
                 style={styles.inputText}
                 weare={subscription.weare}

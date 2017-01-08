@@ -34,8 +34,6 @@ function dataReducer(state, action) {
       return Object.assign({},state,{day:action.day});
     case 'DEVICE_LOADED' :
       return Object.assign({},state,{device:action.device});
-    case 'DISPLAY_MODAL' :
-      return Object.assign({},state,{modalVisible:action.modalVisible});
     default:
       return Object.assign({},initialState);
   }

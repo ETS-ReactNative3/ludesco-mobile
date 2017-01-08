@@ -1,30 +1,44 @@
 import { connect } from 'react-redux';
 import EventScene from '../scenes/EventScene.js';
-import { loadEvent } from '../actions/actions.js';
-import { isConnected } from '../state/container.js';
+import { loadEvent, login, loadReservations, subscribeEvent, unsubscribeEvent } from '../actions/actions.js';
+import store, { isConnected } from '../state/container.js';
+import { hasReservationsFor } from '../domain/event';
 
 const mapStateToProps = (state, ownProps) => {
   return {
     event : state.event,
-    modalVisible: false,
+    isConnected : isConnected(),
     logged: state.logged,
-    loginModalVisible: false,
-    text : ''
+    user : state.user,
+    hasReservation : hasReservationsFor(state.event, state.reservations)
   }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
-  let displayDialog = (dispatch, getState) => {
-    const {logged} = getState();
-    if(!logged) {
-      dispatch({type:"DISPLAY_LOGIN_MODAL",loginModalVisible: true});
-    } else {
-      dispatch({type:"DISPLAY_MODAL",modalVisible: true});
-    }
-  }
   return {
-    askSubscribe : function() {
-        dispatch(displayDialog());
+    doConnect(event, user) {
+      return dispatch(login(user))
+        .then((user) => {
+          return dispatch(loadReservations())
+        })
+        .then(() => {
+          const {reservations, user} = store.getState();
+          if(!hasReservationsFor(event, reservations)) {
+            return dispatch(subscribeEvent({user_id: user.id, event_id: event.id}));
+          }
+        }).then(() => {
+          return dispatch(loadEvent(event.id));
+        });
+    },
+    subscribe : function(subscription) {
+      return dispatch(subscribeEvent(subscription))
+        .then((reservations) => dispatch(loadReservations()))
+        .then(() => dispatch(loadEvent(subscription.event_id)));
+    },
+    unsubscribe : function(unsubscription) {
+      return dispatch(unsubscribeEvent(unsubscription))
+        .then((reservations) => dispatch(loadReservations()))
+        .then(() => dispatch(loadEvent(unsubscription.event_id)));
     }
   }
 }
