@@ -118,9 +118,9 @@ export function login(maybeUser) {
     .then((user) => {
         const u = Object.assign({},maybeUser,user);
         return dispatch({type:'LOGIN_SUCCESS',user: u});
-    })
-    .catch(() => {
-      alert('Utilisateur/Mot de passe invalide');
+    }).catch(() => {
+      alert('Login ou mot de passe invalide');
+      throw "Wrong credentials";
     });
   }
 }

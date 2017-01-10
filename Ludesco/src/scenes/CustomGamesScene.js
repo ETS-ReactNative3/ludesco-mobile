@@ -94,7 +94,6 @@ export default class CustomGamesScene extends Component {
   render() {
     const {games, createGame, subscribe, device, deleteGame} = this.props;
     const {createGameModalVisible, subscribeModalVisible, game, subscription, selectedGame} = this.state;
-
     const childrens = games.map((e,i) => {
       return <TouchableHighlight style={{marginRight:16, marginLeft:16}} key={i} onPress={() => this.openSubscribeModal(e)}>
                 <View>
@@ -102,7 +101,6 @@ export default class CustomGamesScene extends Component {
                 </View>
               </TouchableHighlight>
     });
-
     return <View style={{flex:1}}>
             <CreateCustomGameModal
               onChangeText={(field,value) => this.onChangeText(field,value)}

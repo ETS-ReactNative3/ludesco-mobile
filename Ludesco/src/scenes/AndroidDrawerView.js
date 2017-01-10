@@ -7,6 +7,10 @@ import { fetchJSON } from '../util/http';
 import { loadReservations,loadCustomGames, login, loadDevice } from '../actions/actions';
 
 export default class Navigation extends Component {
+    static propTypes = {
+      close : React.PropTypes.func.isRequired
+    }
+
     constructor(props) {
         super(props);
         this.state = {
@@ -42,7 +46,7 @@ export default class Navigation extends Component {
     }
 
     changeScene = (route) => {
-        const { drawer, navigator } = this.props;
+        const { drawer, navigator, close } = this.props;
         this.setState({
             route: route
         });
@@ -51,8 +55,8 @@ export default class Navigation extends Component {
         } else if(route.title=='customGames') {
           store.dispatch(loadCustomGames());
         }
-        this.props.navigator.push(route);
-        drawer.closeDrawer();
+        navigator.push(route);
+        close();
     };
 
     render() {

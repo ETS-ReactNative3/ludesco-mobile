@@ -6,12 +6,12 @@ const URL = 'http://10.0.2.2:3000/';
 
 export function fetchJSON(url, opts) {
   return fetch(URL+url, opts)
-          .then((resp) => {
-              if(resp.status!==200) {
-                  console.warn(JSON.stringify(resp));
-              }
-              return resp;
-          }).then((response) => response.json());
+          .then((response) => {
+            if(response.status!=200)
+              throw "Wrong credentials";
+            return response;
+          })
+          .then((response) => response.json());
 }
 
 export function storeEvents(events) {

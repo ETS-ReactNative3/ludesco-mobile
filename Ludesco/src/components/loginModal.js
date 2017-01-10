@@ -33,7 +33,11 @@ export class LoginModal extends Component {
               secureTextEntry={true}
               onChangeText={(value) => this.onChangeText('password', value)} />
               <View>
-                <Button style={{width: 20}} text="Se connecter" onPress={() => doConnect(this.state)} />
+                <Button style={{width: 20}} text="Se connecter" onPress={() => {
+                  if(this.state) {
+                    doConnect(this.state)}
+                  }
+                } />
               </View>
           </View>
         </View>
