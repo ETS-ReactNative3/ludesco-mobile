@@ -20,29 +20,29 @@ import EventSceneContainer from '../containers/EventSceneContainer.js';
 import MyReservationsSceneContainer from '../containers/MyReservationsSceneContainer.js';
 import CustomGamesSceneContainer from '../containers/CustomGamesSceneContainer.js';
 import store from '../state/container';
+import LudescoNavigator from '../navigation/LudescoNavigator.js';
 
 export default class Main extends Component {
   static propTypes = {
-    toolbar : React.PropTypes.element.isRequired,
-    setNavigator : React.PropTypes.func.isRequired
+    toolbar : React.PropTypes.element.isRequired
   }
   render() {
-    const {getNavigator, toolbar, setNavigator} = this.props;
+    const {toolbar} = this.props;
     return <Navigator
-              initialRoute={{title: 'Programme', index:0}}
-              renderScene={(route, navigator) => {
+              initialRoute={{title: 'programme', index:0}}
+              renderScene={(route) => {
                 if(route.title==='event') {
-                  return (<EventSceneContainer id={route.id} navigator={navigator} />)
+                  return (<EventSceneContainer id={route.id} />)
                 } else if(route.title=='myreservations') {
-                  return (<MyReservationsSceneContainer navigator={navigator} />)
+                  return (<MyReservationsSceneContainer />)
                 } else if(route.title=='customGames') {
-                  return (<CustomGamesSceneContainer navigator={navigator} />)
+                  return (<CustomGamesSceneContainer />)
                 } else {
-                  return (<ProgrammeSceneContainer navigator={navigator} />)
+                  return (<ProgrammeSceneContainer />)
                 }
               }}
+              ref={(navigator) => LudescoNavigator.setNavigator(navigator)}
               configureScene={(route, routeStack) => Navigator.SceneConfigs.FloatFromBottom}
-              ref={(navigator) => {setNavigator(navigator)}}
               navigationBar={toolbar}
             />
   }

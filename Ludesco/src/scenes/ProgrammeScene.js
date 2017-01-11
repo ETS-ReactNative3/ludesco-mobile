@@ -6,12 +6,9 @@ import {
   AsyncStorage,
   View,
   TouchableHighlight,
-  Ripple,
   StyleSheet
 } from 'react-native';
 import { Avatar } from 'react-native-material-design';
-import Icon from 'react-native-vector-icons/FontAwesome';
-const myIcon = (<Icon name="rocket" size={30} color="#900" />)
 
 export default class ProgrammeScene extends Component {
   constructor(props) {

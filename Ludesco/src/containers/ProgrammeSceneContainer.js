@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import ProgrammeScene from '../scenes/ProgrammeScene';
 import { loadEvents, loadEvent } from '../actions/actions';
+import LudescoNavigator  from '../navigation/LudescoNavigator';
 
 var moment = require('moment');
 require('moment/locale/fr');
@@ -57,14 +58,13 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
-  const { navigator } = ownProps;
   return {
     beforeDisplay : function(day, categories) {
       dispatch(loadEvents(day, categories));
     },
     onEventClick : function(event) {
       dispatch(loadEvent(event.id));
-      navigator.push({title:'event', id:event.id});
+      LudescoNavigator.navigateTo({title:'event', id:event.id});
     },
     onDayClick : function(day) {
       dispatch({type:'DAY_FILTER',day: day})

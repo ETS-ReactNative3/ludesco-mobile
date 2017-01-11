@@ -11,6 +11,7 @@ import { loadReservations,
          toggleNotificationsInfo,
          toggleNotificationsParties } from '../actions/actions';
 import { connect } from 'react-redux';
+import LudescoNavigator from '../navigation/LudescoNavigator';
 
 var HTMLView = require('react-native-htmlview');
 
@@ -41,9 +42,6 @@ class AndroidDrawerView extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            route: null
-        }
         store.dispatch(loadDevice());
         store.dispatch(loadCategories());
     }
@@ -59,7 +57,7 @@ class AndroidDrawerView extends Component {
     }
 
     changeScene = (route) => {
-        const { drawer, navigator, close } = this.props;
+        const { drawer, close } = this.props;
         this.setState({
             route: route
         });
@@ -68,14 +66,12 @@ class AndroidDrawerView extends Component {
         } else if(route.title=='customGames') {
           store.dispatch(loadCustomGames());
         }
-        navigator.push(route);
+        LudescoNavigator.navigateTo(route);
         close();
     };
 
     render() {
-        const { route } = this.state;
         const { categories, notificationInfo, notificationParties, toggleNotificationsInfo, toggleNotificationsParties } = this.props;
-
         return (
             <ScrollView>
             <Drawer theme='light'>
@@ -86,19 +82,16 @@ class AndroidDrawerView extends Component {
                     items={[{
                         icon: 'list',
                         value: 'Programme',
-                        active: route === 'programme',
-                        onPress: () => this.changeScene('welcome'),
-                        onLongPress: () => this.changeScene('welcome')
+                        onPress: () => this.changeScene({title:'programme'}),
+                        onLongPress: () => this.changeScene({title:'programme'})
                     }, {
                         icon: 'date-range',
                         value: 'Réservations',
-                        active: route === 'myreservations',
                         onPress: () => this.changeScene({title:'myreservations'}),
                         onLongPress: () => this.changeScene({title:'myreservations'})
                     }, {
                         icon: 'games',
                         value: 'Parties éphémères',
-                        active: route === 'customGames',
                         onPress: () => this.changeScene({title:'customGames'}),
                         onLongPress: () => this.changeScene({title:'customGames'})
                     }]}

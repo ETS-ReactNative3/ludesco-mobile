@@ -11,23 +11,15 @@ import AndroidDrawerViewContainer from './src/scenes/AndroidDrawerView.js';
 import NotificationModal from './src/notifications/NotificationModal';
 import Main from './src/scenes/Main.js';
 import store from './src/state/container.js'
-
-var navigator;
-
-function getNavigator() {
-  return navigator;
-}
+import LudescoNavigator from './src/navigation/LudescoNavigator.js';
 
 class Ludesco extends Component {
   constructor(props) {
     super(props);
-    this.state = {drawer: null, navigator: null, navgation: null};
+    this.state = {drawer: null, navigation: null};
   }
   setDrawer(drawer) {
     this.setState({drawer});
-  }
-  setNavigator(navi) {
-    navigator = navi;
   }
   setNavigation(navigation) {
     this.setState({navigation});
@@ -40,7 +32,7 @@ class Ludesco extends Component {
   }
   render() {
     const {navigation, drawer} = this.state;
-    const toolbar = <Toolbar navigator={navigator} title="Ludesco" onIconPress={() => this.openDrawer()}
+    const toolbar = <Toolbar title="Ludesco" onIconPress={() => this.openDrawer()}
             icon='menu'
             rightIconStyle={{
                 margin: 10
@@ -49,26 +41,20 @@ class Ludesco extends Component {
               <DrawerLayoutAndroid
                 drawerPosition={DrawerLayoutAndroid.positions.Left}
                 renderNavigationView={() =>
-                  <AndroidDrawerViewContainer ref={(navigation) => !this.state.navigation ? this.setNavigation(navigation) : null}
-                    close={() => this.closeDrawer()}
-                    navigator={navigator} />}
+                  <AndroidDrawerViewContainer
+                    ref={(navigation) => !this.state.navigation ? this.setNavigation(navigation) : null}
+                    close={() => this.closeDrawer()} />
+                }
                 ref={(drawer) => {!this.state.drawer ? this.setDrawer(drawer) : null}}>
                 <NotificationModal />
-                <Main
-                  toolbar={toolbar}
-                  getNavigator={getNavigator}
-                  setNavigator={(navi) => {!navigator ? this.setNavigator(navi) : null}}/>
+                <Main toolbar={toolbar} />
               </DrawerLayoutAndroid>
             </Provider>;
   }
 }
 
 BackAndroid.addEventListener('hardwareBackPress', () => {
-  navigator.pop();
-  if(navigator.getCurrentRoutes().length===1) {
-    return false;
-  }
-  return true;
+  return LudescoNavigator.pop();
 });
 
 AppRegistry.registerComponent('Ludesco', () => Ludesco);

@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import MyReservationsScene from '../scenes/MyReservationsScene';
 import { loadReservations, login, loadEvent } from '../actions/actions';
 import { isConnected } from '../state/container.js';
+import LudescoNavigator from '../navigation/LudescoNavigator.js';
 
 var moment = require('moment');
 
@@ -16,18 +17,17 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
-  const { navigator } = ownProps;
   return {
     doConnect(user) {
         return dispatch(login(user)).then(() => dispatch(loadReservations()));
     },
     onReservationPress(reservation) {
       return dispatch(loadEvent(reservation.event_id)).then(() => {
-        navigator.push({title:'event', id:reservation.event_id});
+        LudescoNavigator.navigateTo({title:'event', id:reservation.event_id});
       });
     },
     close() {
-      navigator.pop();
+      LudescoNavigator.pop();
     }
   }
 }
