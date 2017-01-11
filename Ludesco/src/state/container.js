@@ -2,12 +2,15 @@ import thunkMiddleware from 'redux-thunk';
 import { createStore, applyMiddleware, combineReducers } from 'redux';
 
 const initialState = {
-  modalVisible: false,
-  loginModalVisible: false,
   reservations: [],
   event : {},
   customGames : [],
-  user: {}
+  user: {},
+  categories : [],
+  notificationInfo : true,
+  notificationParties : false,
+  notificationModalVisible : false,
+  notification : {}
 }
 
 function dataReducer(state, action) {
@@ -28,12 +31,20 @@ function dataReducer(state, action) {
       return Object.assign({},state,{customGames:action.customGames});
     case 'LOGIN_SUCCESS':
       return Object.assign({},state,{user:action.user});
-    case 'CATEGORIES' :
-      return {categories: action.categories};
+    case 'CATEGORIES_LOADED' :
+      return Object.assign({}, state, {categories: action.categories});
     case 'DAY_FILTER' :
       return Object.assign({},state,{day:action.day});
     case 'DEVICE_LOADED' :
       return Object.assign({},state,{device:action.device});
+    case 'TOGGLE_NOTIFICATIONS_PARTIES' :
+      return Object.assign({},state,{notificationParties:action.value});
+    case 'TOGGLE_NOTIFICATIONS_INFO' :
+      return Object.assign({},state,{notificationInfo:action.value});
+    case 'NOTIFICATION_RECEIVED' :
+      return Object.assign({}, state,{notification:action.notification});
+    case 'NOTIFICATION_ACKNOWLEDGE':
+      return Object.assign({}, state,{notificationModalVisible: false});
     default:
       return Object.assign({},initialState);
   }

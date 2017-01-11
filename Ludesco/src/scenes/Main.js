@@ -14,36 +14,17 @@ import {
   Button
 } from 'react-native';
 import FCM from 'react-native-fcm';
+import watch from 'redux-watch'
 import ProgrammeSceneContainer from '../containers/ProgrammeSceneContainer.js';
 import EventSceneContainer from '../containers/EventSceneContainer.js';
 import MyReservationsSceneContainer from '../containers/MyReservationsSceneContainer.js';
 import CustomGamesSceneContainer from '../containers/CustomGamesSceneContainer.js';
+import store from '../state/container';
 
 export default class Main extends Component {
   static propTypes = {
     toolbar : React.PropTypes.element.isRequired,
-    //navigator : React.PropTypes.element.isRequired,
     setNavigator : React.PropTypes.func.isRequired
-  }
-  constructor(props) {
-    super(props);
-    this.state = {
-      notificationModalVisible : false,
-      notification : {}
-    }
-
-    FCM.requestPermissions(); // for iOS
-    this.notificationUnsubscribe = FCM.on('notification', (notif) => {
-      this.setState({notification: notif, notificationModalVisible: true});
-    });
-    FCM.subscribeToTopic('/topics/notification');
-    FCM.subscribeToTopic('/topics/games');
-  }
-  closeNotificationModal() {
-    this.setState({notificationModalVisible: false});
-  }
-  openNotificationModal() {
-    this.setState({notificationModalVisible: true});
   }
   render() {
     const {getNavigator, toolbar, setNavigator} = this.props;
@@ -64,26 +45,6 @@ export default class Main extends Component {
               ref={(navigator) => {setNavigator(navigator)}}
               navigationBar={toolbar}
             />
-  }
-}
-
-export class NotificationModal extends Component {
-  static propTypes = {
-    modalVisible : React.PropTypes.bool.isRequired,
-    close : React.PropTypes.func.isRequired
-  }
-  render() {
-    const {title, message, modalVisible, close} = this.props;
-    return <Modal animationType={"fade"} transparent={false} visible={modalVisible} onRequestClose={close}>
-      <View style={{height:100, flex:1, alignItems:'center', backgroundColor:'white', flexDirection:'row', justifyContent:'center'}}>
-        <View>
-          <Text>{title}</Text>
-        <View>
-        </View>
-          <Text>{message}</Text>
-        </View>
-      </View>
-    </Modal>;
   }
 }
 

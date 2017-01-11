@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image, ScrollView, StyleSheet, Modal, TouchableHighlight, TextInput } from 'react-native';
+import { View, Text, Image, ScrollView, StyleSheet, Modal, TouchableHighlight, TextInput, WebView } from 'react-native';
 import { Card, Button } from 'react-native-material-design';
 import { LoginModal } from '../components/loginModal';
 import styles from '../components/styles';
@@ -50,21 +50,38 @@ export default class EventScene extends Component {
 }
 
 class Event extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      height: 0
+    }
+  }
+  onNavigationStateChange(nav) {
+    this.setState({height: Number(nav.title)});
+  }
   render() {
     const {event, askSubscribe, askUnsubscribe, hasReservation} = this.props;
+    const {height} = this.state;
     if(!event) return (<View></View>);
     let cardButtons;
     if(event.hasinscriptions) {
       if(event.free) {
         cardButtons = <TakePart hasReservation={hasReservation} event={event} askSubscribe={askSubscribe} askUnsubscribe={askUnsubscribe} />
       } else {
-        cardButtons = <Text style={{fontStyle:'italic'}}>{"Il n'est pas possible de s'inscrire à une animation payante. Inscris-toi sur le site internet ou à l'acceuil."}</Text>
+        cardButtons = <Text style={{marginBottom:12,fontStyle:'italic'}}>{"Il n'est pas possible de s'inscrire à une animation payante. Inscris-toi sur le site internet ou à l'acceuil."}</Text>
       }
     }
+    var html = '<!DOCTYPE html><html><style>body {font-size: 14px;}</style><body>' + event.description + '<script>window.location.hash = 1;document.title = document.height;</script></body></html>';
     return (<Card>
       <Text style={styles.eventTitle}>{event.event_name}</Text>
         <Card.Body>
-            <HTMLView value={event.description} />
+        <WebView
+          automaticallyAdjustContentInsets={true}
+          style={{height:height}}
+          source={{html:html}}
+          scrollEnabled={false}
+          onNavigationStateChange={this.onNavigationStateChange.bind(this)}
+           />
         </Card.Body>
         {cardButtons}
       </Card>);

@@ -7,7 +7,8 @@ import {
 } from 'react-native';
 import { Toolbar, Subheader, Avatar, Drawer, Divider, COLOR, TYPO } from 'react-native-material-design';
 import { Provider } from 'react-redux';
-import AndroidDrawerView from './src/scenes/AndroidDrawerView.js';
+import AndroidDrawerViewContainer from './src/scenes/AndroidDrawerView.js';
+import NotificationModal from './src/notifications/NotificationModal';
 import Main from './src/scenes/Main.js';
 import store from './src/state/container.js'
 
@@ -48,10 +49,11 @@ class Ludesco extends Component {
               <DrawerLayoutAndroid
                 drawerPosition={DrawerLayoutAndroid.positions.Left}
                 renderNavigationView={() =>
-                  <AndroidDrawerView ref={(navigation) => !this.state.navigation ? this.setNavigation(navigation) : null}
+                  <AndroidDrawerViewContainer ref={(navigation) => !this.state.navigation ? this.setNavigation(navigation) : null}
                     close={() => this.closeDrawer()}
                     navigator={navigator} />}
                 ref={(drawer) => {!this.state.drawer ? this.setDrawer(drawer) : null}}>
+                <NotificationModal />
                 <Main
                   toolbar={toolbar}
                   getNavigator={getNavigator}

@@ -10,6 +10,8 @@ import {
   StyleSheet
 } from 'react-native';
 import { Avatar } from 'react-native-material-design';
+import Icon from 'react-native-vector-icons/FontAwesome';
+const myIcon = (<Icon name="rocket" size={30} color="#900" />)
 
 export default class ProgrammeScene extends Component {
   constructor(props) {
@@ -57,12 +59,16 @@ class Event extends Component {
   }
   render() {
     const {event, onEventClick} = this.props;
-    const {icon, color} = this.style(event);
+    const {icon} = this.style(event);
+    const colors = ["googleBlue","googleGreen","googleRed","googleYellow","googleGrey"];
+    const letter = event.event_name.substring(0,1);
+    const letterCode = event.event_name.charCodeAt(0);
+    const color = colors[letterCode%colors.length];
     var inscriptionsView = event.hasinscriptions ? <Text style={{fontStyle:'italic',fontSize: 12}}>{event.participants}/{event.ticket_spaces} participants</Text> : <Text style={{fontStyle:'italic',fontSize: 12}}>Sur place</Text>
     return (<TouchableHighlight onPress={() => {onEventClick(event)}}>
               <View style={{paddingLeft: 16, paddingRight:16, height: 72, flex: 1, flexDirection:'row'}}>
-                  <View style={{paddingTop: 16}}>
-                  <Avatar icon={icon} size={30} backgroundColor={color}/>
+              <View style={{paddingTop: 16}}>
+                  <Avatar backgroundColor={color} text={event.event_name.substring(0,1)} />
                   </View>
                   <View style={{flex:1, height: 80,paddingLeft: 16, flexDirection:'column', justifyContent:'center'}}>
                     <Text numberOfLines={1} style={{fontWeight: 'bold'}}>{event.event_name}</Text>

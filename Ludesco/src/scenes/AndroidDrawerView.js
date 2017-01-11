@@ -4,45 +4,58 @@ import Checkbox from '../components/checkbox';
 import { Avatar, Drawer, Divider, COLOR, TYPO, PRIMARY_COLORS } from 'react-native-material-design';
 import store,{isConnected} from '../state/container';
 import { fetchJSON } from '../util/http';
-import { loadReservations,loadCustomGames, login, loadDevice } from '../actions/actions';
+import { loadReservations,
+         loadCustomGames,
+         loadDevice,
+         loadCategories,
+         toggleNotificationsInfo,
+         toggleNotificationsParties } from '../actions/actions';
+import { connect } from 'react-redux';
 
-export default class Navigation extends Component {
+var HTMLView = require('react-native-htmlview');
+
+const mapStateToProps = (state, ownProps) => {
+   return {
+     categories: state.categories,
+     notificationInfo : state.notificationInfo,
+     notificationParties : state.notificationParties
+   }
+}
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+   return {
+     toggleNotificationsInfo() {
+       dispatch(toggleNotificationsInfo());
+     },
+     toggleNotificationsParties() {
+       dispatch(toggleNotificationsParties())
+     }
+   }
+}
+
+class AndroidDrawerView extends Component {
     static propTypes = {
-      close : React.PropTypes.func.isRequired
+      close : React.PropTypes.func.isRequired,
+      categories : React.PropTypes.array.isRequired
     }
 
     constructor(props) {
         super(props);
         this.state = {
-            route: null,
-            categories: []
+            route: null
         }
-
-        fetchJSON('public/categories')
-          .then((categories) => {
-            let cat = categories.map((c) => [c.name, true]);
-            this.setState({categories: cat});
-          });
-
         store.dispatch(loadDevice());
+        store.dispatch(loadCategories());
     }
 
     toggleCategory(check, value) {
-      let categories = this.state.categories;
-      let newCat = categories.map((c) => {
-        let [label] = c;
+      const { categories } = this.props;
+      const newCat = categories.map((c) => {
+        const [label] = c;
         if(value!==label) return c;
         return [label, check];
       });
-      let storedCat = newCat.filter((c) => {
-        let [label, value] = c;
-        return value;
-      }).map((c) => {
-        let [label, value] = c;
-        return label;
-      });
-      this.setState({categories:newCat})
-      store.dispatch({type:'CATEGORIES', categories:storedCat})
+      store.dispatch({type:'CATEGORIES_LOADED', categories:newCat});
     }
 
     changeScene = (route) => {
@@ -61,6 +74,7 @@ export default class Navigation extends Component {
 
     render() {
         const { route } = this.state;
+        const { categories, notificationInfo, notificationParties, toggleNotificationsInfo, toggleNotificationsParties } = this.props;
 
         return (
             <ScrollView>
@@ -68,38 +82,51 @@ export default class Navigation extends Component {
                 <Drawer.Header image={<Image source={require('./../img/nav.jpg')} />}>
                 </Drawer.Header>
                 <Drawer.Section
+                  title="Ludesco"
                     items={[{
                         icon: 'list',
                         value: 'Programme',
-                        label: '12',
                         active: route === 'programme',
                         onPress: () => this.changeScene('welcome'),
                         onLongPress: () => this.changeScene('welcome')
                     }, {
                         icon: 'date-range',
-                        value: 'Mes réservations',
-                        labels: '12',
+                        value: 'Réservations',
                         active: route === 'myreservations',
                         onPress: () => this.changeScene({title:'myreservations'}),
                         onLongPress: () => this.changeScene({title:'myreservations'})
                     }, {
-                        icon: 'date-range',
-                        value: 'Programme joueurs',
-                        labels: '12',
+                        icon: 'games',
+                        value: 'Parties éphémères',
                         active: route === 'customGames',
-                        onPress: () => this.changeScene({title:'customGames'})
+                        onPress: () => this.changeScene({title:'customGames'}),
+                        onLongPress: () => this.changeScene({title:'customGames'})
                     }]}
                 />
-            </Drawer>
             <Divider />
-            {this.state.categories.map((c,i) => {
+            <Drawer.Section
+              title="Notifications"/>
+              <Checkbox onCheck={toggleNotificationsInfo} value="" primary="googleGreen" label="Notifications Info" checked={notificationInfo} />
+              <Checkbox onCheck={toggleNotificationsParties} value="" primary="googleGreen" label="Notifications Parties" checked={notificationParties} />
+            <Divider />
+            <Drawer.Section
+              title="Filtres par catégorie"/>
+            {categories.sort().map((c,i) => {
               const [label, checked] = c;
-              return <Checkbox key={i} onCheck={(check, label) => {this.toggleCategory(check, label)}} checked={checked} value={label} label={label} margin={8} iconSize={16} />
+              return <Checkbox key={i} onCheck={(check, label) => {this.toggleCategory(check, label)}} checked={checked} value={label} label={<HTMLView value={label} />} margin={8} iconSize={16} />
             })}
+            </Drawer>
             </ScrollView>
         );
     }
 }
+
+const AndroidDrawerViewContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AndroidDrawerView);
+
+export default AndroidDrawerViewContainer;
 
 const styles = {
     header: {

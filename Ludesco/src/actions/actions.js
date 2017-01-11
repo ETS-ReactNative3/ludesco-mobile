@@ -133,6 +133,41 @@ export function loadDevice() {
   }
 }
 
+export function loadCategories() {
+  return (dispatch) => {
+    return fetchJSON('public/categories').then((categories) => {
+        let usedCategories = categories.filter((c) => !c.name.includes('OLD') && !c.name.includes('2016')).map((c) => [c.name, true]);
+        return dispatch({type:'CATEGORIES_LOADED',categories:usedCategories});
+    });
+  }
+}
+
+export function toggleNotificationsInfo() {
+  return (dispatch, getState) => {
+    const {notificationInfo} = getState();
+    return dispatch({type:'TOGGLE_NOTIFICATIONS_INFO',value:!notificationInfo})
+  }
+}
+
+export function toggleNotificationsParties() {
+  return (dispatch, getState) => {
+    const {notificationParties} = getState();
+    return dispatch({type:'TOGGLE_NOTIFICATIONS_PARTIES',value:!notificationParties})
+  }
+}
+
+export function notificationReceived(notification) {
+  return (dispatch, getState) => {
+    return dispatch({type:'NOTIFICATION_RECEIVED',notification});
+  }
+}
+
+export function ackwnoledgeNotification(notification) {
+  return (dispatch, getState) => {
+    return dispatch({type:'NOTIFICATION_ACKNOWLEDGE'});
+  }
+}
+
 function headers(user) {
   const {username,password} = user;
   let headers = new Headers();

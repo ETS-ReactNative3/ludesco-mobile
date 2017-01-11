@@ -7,15 +7,15 @@ require('moment/locale/fr');
 
 const getEvents = (events, categories = [], day) => {
   function isInCategories(event) {
-    if(categories.length===0) return true;
-    return categories.some((c) => event.categories.indexOf(c) >= 0);
+    const selectedCategories = categories.filter(([name,checked]) => checked);
+    if(selectedCategories.length===0) return true;
+    return selectedCategories.some(([name,checked]) => event.categories.indexOf(name) >= 0);
   }
 
   function isDuringDay(event) {
     if(!day && day!==0) return true;
     return moment(event.event_start_date).day()===day;
   }
-
   if(events) {
     return events
       .filter(isInCategories)
