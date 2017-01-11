@@ -21,10 +21,15 @@ import MyReservationsSceneContainer from '../containers/MyReservationsSceneConta
 import CustomGamesSceneContainer from '../containers/CustomGamesSceneContainer.js';
 import store from '../state/container';
 import LudescoNavigator from '../navigation/LudescoNavigator.js';
+import Notifier from '../notifications/Notifier.js';
 
 export default class Main extends Component {
   static propTypes = {
     toolbar : React.PropTypes.element.isRequired
+  }
+  constructor(props) {
+    super(props);
+    Notifier.init();
   }
   render() {
     const {toolbar} = this.props;

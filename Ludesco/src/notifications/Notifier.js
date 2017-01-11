@@ -9,17 +9,16 @@ export default class Notifier {
 
   static init() {
     // By default everyone is subscribed to the default notification topic
-    FCM.subscribeToTopic(TOPIC_NOTIFICATION);
+    FCM.subscribeToTopic(this.TOPIC_NOTIFICATION);
 
     let handleSubscription = (topic) => {
-      alert(topic);
       return (v) => {
         if(v) {
           FCM.subscribeToTopic(topic);
-        }
         } else {
           FCM.unsubscribeFromTopic(topic);
         }
+      }
     }
 
     FCM.requestPermissions(); // for iOS
@@ -30,7 +29,7 @@ export default class Notifier {
     let wNotInfo = watch(store.getState,'notificationInfo');
     let wNotParties = watch(store.getState,'notificationParties');
 
-    store.subscribe(wNotInfo(handleSubscription(Notifier.TOPIC_NOTIFICATION)));
-    store.subscribe(wNotParties(handleSubscription(Notifier.TOPIC_GAMES)));
+    store.subscribe(wNotInfo(handleSubscription(this.TOPIC_NOTIFICATION)));
+    store.subscribe(wNotParties(handleSubscription(this.TOPIC_GAMES)));
   }
 }

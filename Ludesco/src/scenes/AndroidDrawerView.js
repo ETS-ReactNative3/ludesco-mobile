@@ -99,14 +99,32 @@ class AndroidDrawerView extends Component {
             <Divider />
             <Drawer.Section
               title="Notifications"/>
-              <Checkbox onCheck={toggleNotificationsInfo} value="" primary="googleGreen" label="Notifications Info" checked={notificationInfo} />
-              <Checkbox onCheck={toggleNotificationsParties} value="" primary="googleGreen" label="Notifications Parties" checked={notificationParties} />
+              <Checkbox onCheck={toggleNotificationsInfo}
+                        value=""
+                        primary="googleGreen"
+                        label="Notifications Info"
+                        checked={notificationInfo}
+                        iconSize={16}
+                        margin={8} />
+              <Checkbox onCheck={toggleNotificationsParties}
+                        value=""
+                        primary="googleGreen"
+                        label="Notifications Parties"
+                        checked={notificationParties}
+                        iconSize={16}
+                        margin={8} />
             <Divider />
             <Drawer.Section
               title="Filtres par catégorie"/>
             {categories.sort().map((c,i) => {
               const [label, checked] = c;
-              return <Checkbox key={i} onCheck={(check, label) => {this.toggleCategory(check, label)}} checked={checked} value={label} label={<HTMLView value={label} />} margin={8} iconSize={16} />
+              return <Checkbox key={i}
+                               onCheck={(check, label) => {this.toggleCategory(check, label)}}
+                               checked={checked}
+                               value={label}
+                               label={<HTMLView value={label} />}
+                               margin={8}
+                               iconSize={16} />
             })}
             </Drawer>
             </ScrollView>

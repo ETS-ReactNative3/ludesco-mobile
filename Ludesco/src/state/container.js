@@ -42,7 +42,7 @@ function dataReducer(state, action) {
     case 'TOGGLE_NOTIFICATIONS_INFO' :
       return Object.assign({},state,{notificationInfo:action.value});
     case 'NOTIFICATION_RECEIVED' :
-      return Object.assign({}, state,{notification:action.notification});
+      return Object.assign({}, state,{notificationModalVisible: true, notification:action.notification});
     case 'NOTIFICATION_ACKNOWLEDGE':
       return Object.assign({}, state,{notificationModalVisible: false});
     default:

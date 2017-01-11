@@ -71,7 +71,31 @@ class Event extends Component {
         cardButtons = <Text style={{marginBottom:12,fontStyle:'italic'}}>{"Il n'est pas possible de s'inscrire à une animation payante. Inscris-toi sur le site internet ou à l'acceuil."}</Text>
       }
     }
-    var html = '<!DOCTYPE html><html><style>body {font-size: 14px;}</style><body>' + event.description + '<script>window.location.hash = 1;document.title = document.height;</script></body></html>';
+    //http://flexwork.io/blog/webview-height-html-content-react-native/
+    var html = `<div>${event.description}</div>
+              <style>
+                body, html, #height-calculator {
+                    margin: 0;
+                    padding: 0;
+                    font-size: 14px;
+                }
+                #height-calculator {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                }
+              </style>
+                    <script>
+                      window.location.hash = 1;
+                       var calculator = document.createElement("div");
+                       calculator.id = "height-calculator";
+                       while (document.body.firstChild) {
+                          calculator.appendChild(document.body.firstChild);
+                       }
+                       document.body.appendChild(calculator);
+                       document.title = calculator.clientHeight;
+                  </script>`;
     return (<Card>
       <Text style={styles.eventTitle}>{event.event_name}</Text>
         <Card.Body>
@@ -80,6 +104,8 @@ class Event extends Component {
           style={{height:height}}
           source={{html:html}}
           scrollEnabled={false}
+          javaScriptEnabled={true}
+          domStorageEnabled={true}
           onNavigationStateChange={this.onNavigationStateChange.bind(this)}
            />
         </Card.Body>

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, Modal} from 'react-native';
+import {View, Text, Modal, Dimensions} from 'react-native';
 import { connect } from 'react-redux';
 import {ackwnoledgeNotification} from '../actions/actions.js';
 
@@ -10,13 +10,15 @@ class NotificationModal extends Component {
   }
   render() {
     const {notification, modalVisible, close} = this.props;
-    return <Modal animationType={"fade"} transparent={false} visible={modalVisible} onRequestClose={close}>
-      <View style={{height:100, flex:1, alignItems:'center', backgroundColor:'white', flexDirection:'row', justifyContent:'center'}}>
-        <View>
-          <Text>{notification.title}</Text>
-        <View>
-        </View>
-          <Text>{notification.message}</Text>
+    return <Modal animationType={"fade"} transparent={true} visible={modalVisible} onRequestClose={close}>
+      <View style={{height:100,flex:1, alignItems:'center', flexDirection:'row', justifyContent:'center'}}>
+        <View style={{padding:10,height:100,width:Dimensions.get('window').width,borderWidth: 1,backgroundColor:'white'}}>
+          <View>
+            <Text style={{fontWeight: 'bold'}}>{notification.title}</Text>
+          </View>
+          <View>
+            <Text>{notification.message}</Text>
+          </View>
         </View>
       </View>
     </Modal>
