@@ -36,7 +36,13 @@ class Ludesco extends Component {
             icon='menu'
             rightIconStyle={{
                 margin: 10
-            }}  />;
+            }}
+            actions={
+              [{
+                icon: 'refresh',
+                onPress: () => LudescoNavigator.refresh()
+              }]
+            }  />;
     return <Provider store={store}>
               <DrawerLayoutAndroid
                 drawerPosition={DrawerLayoutAndroid.positions.Left}

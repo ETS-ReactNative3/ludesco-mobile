@@ -75,7 +75,7 @@ class AndroidDrawerView extends Component {
         return (
             <ScrollView>
             <Drawer theme='light'>
-                <Drawer.Header image={<Image source={require('./../img/nav.jpg')} />}>
+                <Drawer.Header image={<Image source={require('./../img/nav.png')} />}>
                 </Drawer.Header>
                 <Drawer.Section
                   title="Ludesco"

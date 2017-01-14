@@ -1,4 +1,4 @@
-package com.ludesco;
+package ch.ludesco;
 
 import com.facebook.react.ReactActivity;
 

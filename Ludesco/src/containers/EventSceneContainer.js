@@ -18,17 +18,15 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     doConnect(event, user) {
       return dispatch(login(user))
-        .then((user) => {
-          return dispatch(loadReservations())
-        })
+        .then(() => dispatch(loadReservations()))
         .then(() => {
           const {reservations, user} = store.getState();
           if(!hasReservationsFor(event, reservations)) {
             return dispatch(subscribeEvent({user_id: user.id, event_id: event.id}));
           }
-        }).then(() => {
-          return dispatch(loadEvent(event.id));
-        });
+        })
+        .then(() => dispatch(loadReservations()))
+        .then(() => dispatch(loadEvent(event.id)));
     },
     subscribe : function(subscription) {
       return dispatch(subscribeEvent(subscription))

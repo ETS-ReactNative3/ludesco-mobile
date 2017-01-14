@@ -19,8 +19,9 @@ export class LoginModal extends Component {
     const { modalVisible, doConnect, onRequestClose } = this.props;
     return (<View>
         <Modal animationType="fade" transparent={true} visible={modalVisible} onRequestClose={onRequestClose} title="Connexion">
-        <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
-          <View style={{width:300,backgroundColor:'white'}}>
+        <View style={{flex:1,alignItems:'center',justifyContent:'center',margin:8}}>
+          <View style={{backgroundColor:'white', width:250}}>
+            <View style={{padding:8}}>
             <Text>
               Utilisateur
             </Text>
@@ -38,6 +39,7 @@ export class LoginModal extends Component {
                     doConnect(this.state)}
                   }
                 } />
+                </View>
               </View>
           </View>
         </View>

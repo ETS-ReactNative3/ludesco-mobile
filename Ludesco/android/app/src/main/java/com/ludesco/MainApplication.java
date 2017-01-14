@@ -1,4 +1,4 @@
-package com.ludesco;
+package ch.ludesco;
 
 import android.app.Application;
 import android.util.Log;

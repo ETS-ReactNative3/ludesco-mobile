@@ -71,8 +71,19 @@ class Event extends Component {
         cardButtons = <Text style={{marginBottom:12,fontStyle:'italic'}}>{"Il n'est pas possible de s'inscrire à une animation payante. Inscris-toi sur le site internet ou à l'acceuil."}</Text>
       }
     }
+
+    var htmlEvent
+    if(event.description) {
+      htmlEvent = event.description;
+      htmlEvent = htmlEvent.replace(/\r\n\r\n/g, "</p><p>").replace(/\n\n/g, "</p><p>");
+      htmlEvent = htmlEvent.replace(/\r\n/g, "<br />").replace(/\n/g, "<br />");
+      htmlEvent = htmlEvent.replace("<p></p>");
+    } else {
+      htmlEvent = "";
+    }
+
     //http://flexwork.io/blog/webview-height-html-content-react-native/
-    var html = `<div>${event.description}</div>
+    var html = `<div>${htmlEvent}</div>
               <style>
                 body, html, #height-calculator {
                     margin: 0;
@@ -85,6 +96,15 @@ class Event extends Component {
                     left: 0;
                     right: 0;
                 }
+                br {
+                   display: block;
+                   margin: 2px 0;
+                   line-height:22px;
+                   content: ""
+                }
+                p {
+
+                }
               </style>
                     <script>
                       window.location.hash = 1;
@@ -94,6 +114,14 @@ class Event extends Component {
                           calculator.appendChild(document.body.firstChild);
                        }
                        document.body.appendChild(calculator);
+                       var imgs = document.getElementsByTagName("img");
+                       for(var i = 0;i<imgs.length;i++) {
+                         if(imgs[i].width>calculator.clientWidth) {
+                           var ratio = calculator.clientWidth/imgs[i].width;
+                           imgs[i].style.width = calculator.clientWidth+"px";
+                           imgs[i].style.height = (imgs[i].height*ratio)+"px";
+                         }
+                       }
                        document.title = calculator.clientHeight;
                   </script>`;
     return (<Card>
