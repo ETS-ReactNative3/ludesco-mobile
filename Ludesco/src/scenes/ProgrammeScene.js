@@ -56,7 +56,6 @@ class Event extends Component {
   }
   render() {
     const {event, onEventClick} = this.props;
-    const {icon} = this.style(event);
     const colors = ["googleBlue","googleGreen","googleRed","googleYellow","googleGrey"];
     const letter = event.event_name.substring(0,1);
     const letterCode = event.event_name.charCodeAt(0);
@@ -75,16 +74,6 @@ class Event extends Component {
               </View>
             </TouchableHighlight>);
   }
-  style(event) {
-    let categories = event.categories;
-    if(categories.includes('Programme principal')) {
-      return {icon: 'accessibility', color: 'blue'};
-    } else if(categories.includes('Programme OFF')) {
-      return {icon: 'home', color: 'googleGreen'};
-    } else {
-      return {icon: 'wifi', color: 'googleYellow'};
-    }
-  }
 }
 
 class DaysFilter extends Component {
@@ -93,7 +82,7 @@ class DaysFilter extends Component {
   }
   render() {
     const {onDayClick} = this.props;
-    return (<View style={{flex: 1, flexDirection: 'row',height:40}}>
+    return (<View style={{flexDirection: 'row',height:40}}>
         <DayFilter text="TOUT" onDayClick={onDayClick} day={null} />
         <Separator />
         <DayFilter text="VENDREDI" onDayClick={onDayClick} day={5} />
