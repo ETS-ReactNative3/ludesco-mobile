@@ -68,7 +68,7 @@ class Event extends Component {
       if(event.free) {
         cardButtons = <TakePart hasReservation={hasReservation} event={event} askSubscribe={askSubscribe} askUnsubscribe={askUnsubscribe} />
       } else {
-        cardButtons = <Text style={{marginBottom:12,fontStyle:'italic'}}>{"Il n'est pas possible de s'inscrire à une animation payante. Inscris-toi sur le site internet ou à l'acceuil."}</Text>
+        cardButtons = <Text style={{marginBottom:12,fontStyle:'italic'}}>{"Il n'est pas possible de s'inscrire à une animation payante via l'application mobile. Inscris-toi sur le site internet ou à l'acceuil."}</Text>
       }
     }
 
@@ -154,7 +154,7 @@ class TakePart extends Component {
     const {event, askSubscribe, askUnsubscribe, hasReservation} = this.props;
     let button;
     if(hasReservation) {
-      button = <Button style={styles.cardButton} text="SE DESINSCRIRE" onPress={askUnsubscribe} />;
+      button = <Button style={styles.cardButton} text="SE DESINSCRIRE" />;
     } else {
       button = <Button style={styles.cardButton} text="S'INSCRIRE" onPress={askSubscribe} />;
     }

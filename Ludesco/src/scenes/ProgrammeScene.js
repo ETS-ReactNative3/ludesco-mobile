@@ -60,7 +60,16 @@ class Event extends Component {
     const letter = event.event_name.substring(0,1);
     const letterCode = event.event_name.charCodeAt(0);
     const color = colors[letterCode%colors.length];
-    var inscriptionsView = event.hasinscriptions ? <Text style={{fontStyle:'italic',fontSize: 12}}>{event.participants}/{event.ticket_spaces} participants</Text> : <Text style={{fontStyle:'italic',fontSize: 12}}>Sur place</Text>
+    var inscriptionsView;
+    if(event.hasinscriptions) {
+      if(event.free) {
+        inscriptionsView = <Text style={{fontStyle:'italic',fontSize: 12}}>{event.participants}/{event.ticket_spaces} participants - Gratuit</Text>
+      } else {
+        inscriptionsView = <Text style={{fontStyle:'italic',fontSize: 12}}>{event.participants}/{event.ticket_spaces} participants - Surtaxe</Text>
+      }
+    } else {
+      inscriptionsView = <Text style={{fontStyle:'italic',fontSize: 12}}>Sur place</Text>
+    }
     return (<TouchableHighlight onPress={() => {onEventClick(event)}}>
               <View style={{paddingLeft: 16, paddingRight:16, height: 72, flex: 1, flexDirection:'row'}}>
               <View style={{paddingTop: 16}}>

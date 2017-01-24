@@ -24,7 +24,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         return dispatch(createCustomGame(realGame)).then(() => dispatch(loadCustomGames()));
     },
     subscribe(subscription) {
-      return dispatch(subscribeCustomGame(subscription)).then(() => dispatch(loadCustomGames()));
+      return dispatch(subscribeCustomGame(subscription)).then(() => dispatch(loadCustomGames()))
     },
     deleteGame(game) {
       return dispatch(deleteGame(game)).then(() => dispatch(loadCustomGames()));

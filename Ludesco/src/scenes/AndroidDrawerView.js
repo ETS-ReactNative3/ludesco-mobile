@@ -78,7 +78,8 @@ class AndroidDrawerView extends Component {
                 <Drawer.Header image={<Image source={require('./../img/nav.png')} />}>
                 </Drawer.Header>
                 <Drawer.Section
-                  title="Ludesco"
+                  style={{marginLeft:20}}
+                  title="Ludesco 8 - 10 au 12 mars"
                     items={[{
                         icon: 'list',
                         value: 'Programme',
@@ -91,7 +92,7 @@ class AndroidDrawerView extends Component {
                         onLongPress: () => this.changeScene({title:'myreservations'})
                     }, {
                         icon: 'games',
-                        value: 'Parties éphémères',
+                        value: 'Parties spontanées',
                         onPress: () => this.changeScene({title:'customGames'}),
                         onLongPress: () => this.changeScene({title:'customGames'})
                     }]}

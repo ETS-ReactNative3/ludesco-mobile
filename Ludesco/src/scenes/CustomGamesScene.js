@@ -19,16 +19,25 @@ import { Avatar } from 'react-native-material-design';
 
 class Game extends Component {
   render() {
-    const {nb_players, name, players, start, duration, location} = this.props.game;
+    const {nb_players, name, players, start, duration, location, subscriptions, device} = this.props.game;
+    const {currentDevice} = this.props;
+    const alreadySubscribe = Object.keys(subscriptions).some((s) => s==currentDevice);
     const stillNeeded = nb_players - players;
     let textStillNeeded;
     let avatar;
-    if(stillNeeded>0) {
+    if(alreadySubscribe) {
+      avatar = {icon: 'done', color:'googleBlue'};
+      if(stillNeeded>0) {
+        textStillNeeded = <Text>Inscrit - {stillNeeded} joueurs-es recherchés</Text>
+      } else {
+        textStillNeeded = <Text>Inscrit - Complet</Text>
+      }
+    } else if(stillNeeded>0) {
       avatar = {icon: 'accessibility', color:'googleGreen'};
       textStillNeeded = <Text>{stillNeeded} joueurs recherchés</Text>
     } else {
       avatar = {icon: 'error', color:'googleRed'};
-      textStillNeeded = <Text>COMPLET</Text>
+      textStillNeeded = <Text>Complet</Text>
     }
     return <View style={{paddingLeft: 16, paddingRight:16, marginBottom:12, flex: 1, flexDirection:'row'}}>
                       <View style={{paddingTop: 16}}>
@@ -53,7 +62,7 @@ export default class CustomGamesScene extends Component {
         nbplayers : "3",
         duration : "30-60",
         start : fmtNow(),
-        weare : 1
+        weare : "1"
       },
       subscription : {
 
@@ -70,7 +79,7 @@ export default class CustomGamesScene extends Component {
   }
   openSubscribeModal(game) {
     const {device} = this.props;
-    const weare = game.subscriptions[device] || 1;
+    const weare = game.subscriptions[device] || "1";
     this.setState({
       selectedGame : game,
       subscription: {weare : weare},
@@ -97,7 +106,7 @@ export default class CustomGamesScene extends Component {
     const childrens = games.map((e,i) => {
       return <TouchableHighlight style={{marginRight:16, marginLeft:16}} key={i} onPress={() => this.openSubscribeModal(e)}>
                 <View>
-                  <Game game={e} />
+                  <Game game={e} currentDevice={device} />
                 </View>
               </TouchableHighlight>
     });
@@ -154,7 +163,7 @@ class SubscribeModal extends Component {
                           onPress: () => deleteGame(selectedGame).then(onClose)
         }];
       } else {
-        title = "Ca m'intéresse";
+        title = "Ca m'intéresse, je suis / nous sommes";
         buttons = [{
                           text: "S'INSCRIRE",
                           onPress: () => subscribe({game_id:selectedGame.id,device:device,weare:subscription.weare}).then(onClose)
@@ -260,6 +269,7 @@ class WeArePicker extends Component {
     return <Picker
       selectedValue={weare}
       onValueChange={(weare) => onWeAreChanged(weare)}>
+        <Picker.Item label="0" value="0" />
         <Picker.Item label="1" value="1" />
         <Picker.Item label="2" value="2" />
         <Picker.Item label="3" value="3" />

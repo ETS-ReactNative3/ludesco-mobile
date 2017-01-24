@@ -23,7 +23,9 @@ export default class Notifier {
 
     FCM.requestPermissions(); // for iOS
     this.notificationUnsubscribe = FCM.on('notification', (notification) => {
-      store.dispatch(notificationReceived(notification));
+      if(notification.title) {
+        store.dispatch(notificationReceived(notification));
+      }
     });
 
     let wNotInfo = watch(store.getState,'notificationInfo');

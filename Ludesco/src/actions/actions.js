@@ -56,6 +56,8 @@ export function createCustomGame(game) {
       method: 'POST',
       body : JSON.stringify(game),
       headers : defaultHeaders
+    }).catch(() => {
+      alert('Indisponible avant le début du festival');
     });
   }
 }
@@ -136,7 +138,7 @@ export function loadDevice() {
 export function loadCategories() {
   return (dispatch) => {
     return fetchJSON('public/categories').then((categories) => {
-        let usedCategories = categories.filter((c) => !c.name.includes('OLD') && !c.name.includes('2016')).map((c) => [c.name, true]);
+        let usedCategories = categories.filter((c) => !c.name.includes('OLD') && !c.name.includes('2016')).map((c) => [c.name, false]);
         return dispatch({type:'CATEGORIES_LOADED',categories:usedCategories});
     });
   }

@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { Text, View, TextInput, Modal } from 'react-native';
+import { Text, View, TextInput, Modal, Linking } from 'react-native';
 import styles from './styles';
 import { Card, Button } from 'react-native-material-design';
 
@@ -33,6 +33,7 @@ export class LoginModal extends Component {
             <TextInput
               secureTextEntry={true}
               onChangeText={(value) => this.onChangeText('password', value)} />
+            <Text>Pour obtenir un identifiant, va créer un compte sur <Text style={{color:'blue'}} onPress={() => Linking.openURL('https://www.ludesco.ch/wp-login.php?action=register')}>le site de Ludesco</Text></Text>
               <View>
                 <Button style={{width: 20}} text="Se connecter" onPress={() => {
                   if(this.state) {
