@@ -90,11 +90,6 @@ class AndroidDrawerView extends Component {
                         value: 'Réservations',
                         onPress: () => this.changeScene({title:'myreservations'}),
                         onLongPress: () => this.changeScene({title:'myreservations'})
-                    }, {
-                        icon: 'games',
-                        value: 'Parties spontanées',
-                        onPress: () => this.changeScene({title:'customGames'}),
-                        onLongPress: () => this.changeScene({title:'customGames'})
                     }]}
                 />
             <Divider />
@@ -105,13 +100,6 @@ class AndroidDrawerView extends Component {
                         primary="googleGreen"
                         label="Notifications Info"
                         checked={notificationInfo}
-                        iconSize={16}
-                        margin={8} />
-              <Checkbox onCheck={toggleNotificationsParties}
-                        value=""
-                        primary="googleGreen"
-                        label="Notifications Parties"
-                        checked={notificationParties}
                         iconSize={16}
                         margin={8} />
             <Divider />

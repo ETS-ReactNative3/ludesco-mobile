@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {View, Text, Modal, Dimensions} from 'react-native';
 import { connect } from 'react-redux';
 import {ackwnoledgeNotification} from '../actions/actions.js';
+import { Button } from 'react-native-material-design';
 
 class NotificationModal extends Component {
   static propTypes = {
@@ -9,7 +10,7 @@ class NotificationModal extends Component {
     close : React.PropTypes.func.isRequired
   }
   render() {
-    const {notification, modalVisible, close} = this.props;
+    const {notification, modalVisible, close, onClick} = this.props;
     return <Modal animationType={"fade"} transparent={true} visible={modalVisible} onRequestClose={close}>
       <View style={{height:100,flex:1, alignItems:'center', flexDirection:'row', justifyContent:'center'}}>
         <View style={{padding:10,height:100,width:Dimensions.get('window').width,borderWidth: 1,backgroundColor:'white'}}>
@@ -18,6 +19,9 @@ class NotificationModal extends Component {
           </View>
           <View>
             <Text>{notification.message}</Text>
+          </View>
+          <View>
+            <Button style={{width: 20}} text={"OK"} onPress={onClick} />
           </View>
         </View>
       </View>

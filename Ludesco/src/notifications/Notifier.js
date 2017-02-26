@@ -9,7 +9,8 @@ export default class Notifier {
 
   static init() {
     // By default everyone is subscribed to the default notification topic
-    FCM.subscribeToTopic(this.TOPIC_NOTIFICATION);
+    //FCM.subscribeToTopic(this.TOPIC_NOTIFICATION);
+    FCM.subscribeToTopic("/topics/test");
 
     let handleSubscription = (topic) => {
       return (v) => {

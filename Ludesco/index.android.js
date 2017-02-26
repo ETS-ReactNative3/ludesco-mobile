@@ -52,7 +52,7 @@ class Ludesco extends Component {
                     close={() => this.closeDrawer()} />
                 }
                 ref={(drawer) => {!this.state.drawer ? this.setDrawer(drawer) : null}}>
-                <NotificationModal />
+                <NotificationModal onClick={() => store.dispatch({type:'NOTIFICATION_ACKNOWLEDGE'})} />
                 <Main toolbar={toolbar} />
               </DrawerLayoutAndroid>
             </Provider>;
