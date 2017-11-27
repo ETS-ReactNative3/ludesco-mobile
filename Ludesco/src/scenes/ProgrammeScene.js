@@ -8,7 +8,7 @@ import {
   TouchableHighlight,
   StyleSheet
 } from 'react-native';
-import { Avatar } from 'react-native-material-design';
+import { Avatar } from 'react-native-material-ui';
 
 export default class ProgrammeScene extends Component {
   constructor(props) {
@@ -22,7 +22,7 @@ export default class ProgrammeScene extends Component {
       onDayClick
     } = this.props;
 		  return (
-        <View style={{marginTop:56}}>
+        <View>
             <DaysFilter onDayClick={onDayClick} />
             <ProgrammeScrollView onEventClick={onEventClick} events={events} />
         </View>);
@@ -110,9 +110,9 @@ class Separator extends Component {
 }
 
 class DayFilter extends Component {
-  static propTypes = {
-      text: PropTypes.string.isRequired
-  }
+  // static propTypes = {
+  //     text: PropTypes.string.isRequired
+  // }
 
   constructor(props) {
     super(props);

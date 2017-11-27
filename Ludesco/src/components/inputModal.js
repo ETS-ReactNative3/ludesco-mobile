@@ -1,19 +1,10 @@
 import React, { Component, PropTypes } from 'react';
-import { Button } from 'react-native-material-design';
+import { Button } from 'react-native-material-ui';
 import { Text, View, ScrollView, TouchableHighlight, TextInput, Modal, StyleSheet, Picker } from 'react-native';
 
 export class InputModal extends Component {
   constructor(props) {
     super(props);
-  }
-  static propTypes = {
-    modalVisible: PropTypes.bool.isRequired,
-    onModalClose: PropTypes.func,
-    title : PropTypes.string.isRequired,
-    buttons : PropTypes.arrayOf(PropTypes.shape({
-      text: PropTypes.string,
-      onPress: PropTypes.func
-    })).isRequired
   }
   render() {
     const {modalVisible, title, onModalClose, buttons, modalStyle, transparent} = this.props;

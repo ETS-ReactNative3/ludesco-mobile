@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Text, View, ScrollView, TouchableHighlight, TextInput, Modal } from 'react-native';
-import { Button } from 'react-native-material-design';
+import { Button } from 'react-native-material-ui';
 import store, { isConnected } from '../state/container.js';
 import { LoginModal } from '../components/loginModal';
 

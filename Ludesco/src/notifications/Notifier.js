@@ -1,4 +1,4 @@
-import FCM from 'react-native-fcm';
+import FCM, {FCMEvent} from 'react-native-fcm';
 import watch from 'redux-watch'
 import store from '../state/container';
 import {notificationReceived} from '../actions/actions.js';
@@ -22,7 +22,7 @@ export default class Notifier {
     }
 
     FCM.requestPermissions(); // for iOS
-    this.notificationUnsubscribe = FCM.on('notification', (notification) => {
+    this.notificationUnsubscribe = FCM.on(FCMEvent.Notification, (notification) => {
       if(notification.title) {
         store.dispatch(notificationReceived(notification));
       }

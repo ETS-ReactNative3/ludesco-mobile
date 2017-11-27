@@ -8,13 +8,14 @@ import {
   TouchableHighlight,
   AsyncStorage,
   DrawerLayoutAndroid,
-  Navigator,
   Modal,
   TextInput,
   Button
 } from 'react-native';
 import FCM from 'react-native-fcm';
+import { StackNavigator } from 'react-navigation';
 import watch from 'redux-watch'
+import { COLOR, ThemeProvider } from 'react-native-material-ui';
 import ProgrammeSceneContainer from '../containers/ProgrammeSceneContainer.js';
 import EventSceneContainer from '../containers/EventSceneContainer.js';
 import MyReservationsSceneContainer from '../containers/MyReservationsSceneContainer.js';
@@ -23,17 +24,24 @@ import store from '../state/container';
 import LudescoNavigator from '../navigation/LudescoNavigator.js';
 import Notifier from '../notifications/Notifier.js';
 
-export default class Main extends Component {
-  static propTypes = {
-    toolbar : React.PropTypes.element.isRequired
+const RootNavigator = StackNavigator({
+  Programme : {
+    screen: ProgrammeSceneContainer
   }
+});
+
+export default class Main extends Component {
   constructor(props) {
     super(props);
     Notifier.init();
   }
   render() {
     const {toolbar} = this.props;
-    return <Navigator
+    return <View>
+            {toolbar}
+            <ProgrammeSceneContainer />
+           </View>
+     /*<Navigator
               initialRoute={{title: 'programme', index:0}}
               renderScene={(route) => {
                 if(route.title==='event') {
@@ -49,7 +57,7 @@ export default class Main extends Component {
               ref={(navigator) => LudescoNavigator.setNavigator(navigator)}
               configureScene={(route, routeStack) => Navigator.SceneConfigs.FloatFromBottom}
               navigationBar={toolbar}
-            />
+            />*/
   }
 }
 

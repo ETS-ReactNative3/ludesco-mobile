@@ -2,13 +2,13 @@ import React, {Component} from 'react';
 import {View, Text, Modal, Dimensions} from 'react-native';
 import { connect } from 'react-redux';
 import {ackwnoledgeNotification} from '../actions/actions.js';
-import { Button } from 'react-native-material-design';
+import { Button } from 'react-native-material-ui';
 
 class NotificationModal extends Component {
-  static propTypes = {
-    modalVisible : React.PropTypes.bool.isRequired,
-    close : React.PropTypes.func.isRequired
-  }
+  // static propTypes = {
+  //   modalVisible : React.PropTypes.bool.isRequired,
+  //   close : React.PropTypes.func.isRequired
+  // }
   render() {
     const {notification, modalVisible, close, onClick} = this.props;
     return <Modal animationType={"fade"} transparent={true} visible={modalVisible} onRequestClose={close}>

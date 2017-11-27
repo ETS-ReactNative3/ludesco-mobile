@@ -1,7 +1,6 @@
 import React, { Component, PropTypes} from 'react';
 import { View, Text, Image, ScrollView } from 'react-native';
-import Checkbox from '../components/checkbox';
-import { Avatar, Drawer, Divider, COLOR, TYPO, PRIMARY_COLORS } from 'react-native-material-design';
+import { Avatar, Drawer, Divider, COLOR, TYPO, PRIMARY_COLORS, Checkbox } from 'react-native-material-ui';
 import store,{isConnected} from '../state/container';
 import { fetchJSON } from '../util/http';
 import { loadReservations,
@@ -35,11 +34,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 }
 
 class AndroidDrawerView extends Component {
-    static propTypes = {
-      close : React.PropTypes.func.isRequired,
-      categories : React.PropTypes.array.isRequired
-    }
-
     constructor(props) {
         super(props);
         store.dispatch(loadDevice());
@@ -78,7 +72,6 @@ class AndroidDrawerView extends Component {
                 <Drawer.Header image={<Image source={require('./../img/nav.png')} />}>
                 </Drawer.Header>
                 <Drawer.Section
-                  style={{marginLeft:20}}
                   title="Ludesco 8 - 10 au 12 mars"
                     items={[{
                         icon: 'list',
@@ -99,9 +92,7 @@ class AndroidDrawerView extends Component {
                         value=""
                         primary="googleGreen"
                         label="Notifications Info"
-                        checked={notificationInfo}
-                        iconSize={16}
-                        margin={8} />
+                        checked={notificationInfo}  />
             <Divider />
             <Drawer.Section
               title="Filtres par catégorie"/>
@@ -111,9 +102,7 @@ class AndroidDrawerView extends Component {
                                onCheck={(check, label) => {this.toggleCategory(check, label)}}
                                checked={checked}
                                value={label}
-                               label={<HTMLView value={label} />}
-                               margin={8}
-                               iconSize={16} />
+                               label={label} />
             })}
             </Drawer>
             </ScrollView>
@@ -127,12 +116,3 @@ const AndroidDrawerViewContainer = connect(
 )(AndroidDrawerView);
 
 export default AndroidDrawerViewContainer;
-
-const styles = {
-    header: {
-        paddingTop: 16
-    },
-    text: {
-        marginTop: 20
-    }
-};

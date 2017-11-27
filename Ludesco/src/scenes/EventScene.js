@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, Image, ScrollView, StyleSheet, Modal, TouchableHighlight, TextInput, WebView } from 'react-native';
-import { Card, Button } from 'react-native-material-design';
+import { Card, Button } from 'react-native-material-ui';
 import { LoginModal } from '../components/loginModal';
 import styles from '../components/styles';
 
@@ -21,7 +21,7 @@ export default class EventScene extends Component {
   }
   subscribe() {
     const {user, event, subscribe} = this.props;
-    subscribe({user_id: user.id, event_id: event.id});
+    subscribe({uier_id: user.id, event_id: event.id});
   }
   unsubscribe() {
     const {user, event, unsubscribe} = this.props;
@@ -143,13 +143,6 @@ class Event extends Component {
 }
 
 class TakePart extends Component {
-  static propTypes = {
-    event : React.PropTypes.object.isRequired,
-    hasReservation : React.PropTypes.bool.isRequired,
-    askSubscribe : React.PropTypes.func.isRequired,
-    askUnsubscribe : React.PropTypes.func.isRequired
-  };
-
   render() {
     const {event, askSubscribe, askUnsubscribe, hasReservation} = this.props;
     let button;

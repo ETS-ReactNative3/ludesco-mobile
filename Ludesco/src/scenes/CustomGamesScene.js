@@ -10,12 +10,12 @@ import { Text,
          ScollView } from 'react-native';
 import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { Button } from 'react-native-material-design';
+import { Button } from 'react-native-material-ui';
 import { fetchJSON } from '../util/http';
 import { InputModal } from '../components/inputModal';
 import { fmtDateTime, fmtDayTime, fmtNow } from '../util/date';
 import DatePicker from 'react-native-datepicker';
-import { Avatar } from 'react-native-material-design';
+import { Avatar } from 'react-native-material-ui';
 
 class Game extends Component {
   render() {

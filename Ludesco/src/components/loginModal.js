@@ -1,14 +1,14 @@
 import React, { Component, PropTypes } from 'react';
 import { Text, View, TextInput, Modal, Linking } from 'react-native';
 import styles from './styles';
-import { Card, Button } from 'react-native-material-design';
+import { Card, Button } from 'react-native-material-ui';
 
 export class LoginModal extends Component {
-  static propTypes = {
-    doConnect: React.PropTypes.func.isRequired,
-    onRequestClose: React.PropTypes.func.isRequired,
-    modalVisible: React.PropTypes.bool.isRequired,
-  }
+  // static propTypes = {
+  //   doConnect: React.PropTypes.func.isRequired,
+  //   onRequestClose: React.PropTypes.func.isRequired,
+  //   modalVisible: React.PropTypes.bool.isRequired,
+  // }
   constructor(props) {
     super(props);
   }
