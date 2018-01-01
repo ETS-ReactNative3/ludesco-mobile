@@ -8,6 +8,8 @@ target 'Ludesco' do
   pod 'Firebase/Messaging'
 
   # Pods for Ludesco
+  pod 'react-native-add-calendar-event', :path => '../node_modules/react-native-add-calendar-event'
+
   target 'LudescoTests' do
     inherit! :search_paths
     # Pods for testing

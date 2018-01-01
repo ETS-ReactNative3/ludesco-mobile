@@ -1,26 +1,21 @@
 import { connect } from 'react-redux';
 import ProgrammeScene from '../scenes/ProgrammeScene';
-import { loadEvents, loadEvent } from '../actions/actions';
-import LudescoNavigator  from '../navigation/LudescoNavigator';
+import { loadEvents, loadEvent, navigateTo } from '../actions/actions';
+import Fuse from 'fuse.js';
 
 var moment = require('moment');
 require('moment/locale/fr');
 
-const getEvents = (events, categories = [], day) => {
+const getEvents = (events, categories = [], search = "") => {
   function isInCategories(event) {
     const selectedCategories = categories.filter(([name,checked]) => checked);
     if(selectedCategories.length===0) return true;
     return selectedCategories.some(([name,checked]) => event.categories.indexOf(name) >= 0);
   }
 
-  function isDuringDay(event) {
-    if(!day && day!==0) return true;
-    return moment(event.event_start_date).day()===day;
-  }
   if(events) {
-    return events
+    const filteredEvents = events
       .filter(isInCategories)
-      .filter(isDuringDay)
       .map(e => {
           let startDate = moment(e.event_start_date);
           let endDate = moment(e.event_end_date);
@@ -44,6 +39,23 @@ const getEvents = (events, categories = [], day) => {
               return 1;
             }
         });
+    if(search) {
+      const result = new Fuse(filteredEvents,{
+        shouldSort: false,
+        tokenize : true,
+        threshold: 0.1,
+        location: 0,
+        distance: 100,
+        maxPatternLength: 32,
+        minMatchCharLength: 1,
+        keys: [
+          "event_name"
+        ]
+      }).search(search);
+      return result;
+    } else {
+      return filteredEvents;
+    }
   } else {
     return [];
   }
@@ -51,9 +63,11 @@ const getEvents = (events, categories = [], day) => {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    events: getEvents(state.events,state.categories,state.day),
+    events: getEvents(state.events,state.categories,state.search),
     categories : state.categories,
-    day : state.day
+    day : state.day,
+    search : state.search,
+    reservations: state.reservations
   }
 }
 
@@ -63,18 +77,30 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch(loadEvents(day, categories));
     },
     onEventClick : function(event) {
-      dispatch(loadEvent(event.id));
-      LudescoNavigator.navigateTo({title:'event', id:event.id});
+      this.ownProps.navigation.navigate(routeName);
     },
     onDayClick : function(day) {
       dispatch({type:'DAY_FILTER',day: day})
+    },
+    navigateTo : function(routeName, eventId) {
+      dispatch(loadEvent(eventId))
+      dispatch(navigateTo(routeName, {eventId}))
     }
   }
 }
 
+const mergeProps = (state, dispatch, ownProps) => {
+  return Object.assign({}, ownProps, state, dispatch, {
+    hasReservationFor: (item) => {
+      return state.reservations.some((r) => item.id === r.event_id)
+    }
+  });
+}
+
 const ProgrammeSceneContainer = connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
+  mergeProps
 )(ProgrammeScene)
 
 export default ProgrammeSceneContainer

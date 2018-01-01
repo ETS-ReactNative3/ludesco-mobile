@@ -8,9 +8,9 @@ import { loadReservations,
          loadDevice,
          loadCategories,
          toggleNotificationsInfo,
-         toggleNotificationsParties } from '../actions/actions';
+         toggleNotificationsParties,
+         navigateTo } from '../actions/actions';
 import { connect } from 'react-redux';
-import LudescoNavigator from '../navigation/LudescoNavigator';
 
 var HTMLView = require('react-native-htmlview');
 
@@ -29,6 +29,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
      },
      toggleNotificationsParties() {
        dispatch(toggleNotificationsParties())
+     },
+     navigateTo(routeName) {
+       dispatch(navigateTo(routeName));
+       ownProps.close();
      }
    }
 }
@@ -50,20 +54,6 @@ class AndroidDrawerView extends Component {
       store.dispatch({type:'CATEGORIES_LOADED', categories:newCat});
     }
 
-    changeScene = (route) => {
-        const { drawer, close } = this.props;
-        this.setState({
-            route: route
-        });
-        if(route.title=='myreservations' && isConnected()) {
-          store.dispatch(loadReservations());
-        } else if(route.title=='customGames') {
-          store.dispatch(loadCustomGames());
-        }
-        LudescoNavigator.navigateTo(route);
-        close();
-    };
-
     render() {
         const { categories, notificationInfo, notificationParties, toggleNotificationsInfo, toggleNotificationsParties } = this.props;
         return (
@@ -72,17 +62,19 @@ class AndroidDrawerView extends Component {
                 <Drawer.Header image={<Image source={require('./../img/nav.png')} />}>
                 </Drawer.Header>
                 <Drawer.Section
-                  title="Ludesco 8 - 10 au 12 mars"
+                  title="Ludesco 9 - 16 au 18 mars"
                     items={[{
                         icon: 'list',
                         value: 'Programme',
-                        onPress: () => this.changeScene({title:'programme'}),
-                        onLongPress: () => this.changeScene({title:'programme'})
+                        onPress: () => this.props.navigateTo('Programme')
                     }, {
                         icon: 'date-range',
-                        value: 'Réservations',
-                        onPress: () => this.changeScene({title:'myreservations'}),
-                        onLongPress: () => this.changeScene({title:'myreservations'})
+                        value: 'Agenda',
+                        onPress: () => this.props.navigateTo('Agenda')
+                    }, {
+                      icon: 'games',
+                      value: 'Le Studio',
+                      onPress: () => this.props.navigateTo('Studio')
                     }]}
                 />
             <Divider />
@@ -98,11 +90,12 @@ class AndroidDrawerView extends Component {
               title="Filtres par catégorie"/>
             {categories.sort().map((c,i) => {
               const [label, checked] = c;
+              const decodedLabel = label.replace(/&amp;/g, '&');
               return <Checkbox key={i}
                                onCheck={(check, label) => {this.toggleCategory(check, label)}}
                                checked={checked}
                                value={label}
-                               label={label} />
+                               label={decodedLabel} />
             })}
             </Drawer>
             </ScrollView>

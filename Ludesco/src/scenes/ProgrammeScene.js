@@ -3,139 +3,146 @@ import {
   ListView,
   ScrollView,
   Text,
+  Image,
   AsyncStorage,
   View,
   TouchableHighlight,
   StyleSheet
 } from 'react-native';
 import { Avatar } from 'react-native-material-ui';
+import { Agenda, LocaleConfig } from 'react-native-calendars';
+import HTMLView from 'react-native-htmlview';
+
+const ICONES_MAPPING = {
+    "Escape Room" : require("../img/EscapeRoom.png"),
+    "Fablab" : require("../img/Fablab.png"),
+    "Familles" : require("../img/Familles.png"),
+    "Figurines" : require("../img/Figurines.png"),
+    "GameDesign" : require("../img/GameDesign.png"),
+    "GN" : require("../img/GN.png"),
+    "JdR" : require("../img/JdR.png"),
+    "Jeux de société" : require("../img/JeuxDeSociete.png"),
+    "Jeux traditionnels" : require("../img/JeuxTraditionnels.png"),
+    "Nouveautés" : require("../img/Nouveautes.png")
+}
 
 export default class ProgrammeScene extends Component {
+  static navigationOptions = ({ navigation }) => ({
+    header: ({screenProps }) => {
+      return screenProps.toolbar
+    }
+  });
+
   constructor(props) {
 		super(props);
-    this.props.beforeDisplay(this.props.day,this.props.categories);
+    if(this.props.events.length==0) {
+      this.props.beforeDisplay(this.props.day,this.props.categories);
+    }
   }
 	render() {
     const {
       events,
       onEventClick,
-      onDayClick
+      onDayClick,
+      navigateTo,
+      hasReservationFor
     } = this.props;
-		  return (
-        <View>
-            <DaysFilter onDayClick={onDayClick} />
-            <ProgrammeScrollView onEventClick={onEventClick} events={events} />
-        </View>);
-		}
+		  return <ProgrammeScrollView onEventClick={onEventClick} navigateTo={navigateTo} events={events} hasReservationFor={hasReservationFor} />
+    }
 }
 
 class ProgrammeScrollView extends Component {
-  constructor(props) {
-    super(props);
-  }
   render() {
     const {
       events,
-      onEventClick
+      onEventClick,
+      navigateTo,
+      hasReservationFor
     } = this.props;
 
-    var rows = events.map((event, index) => {
-      return (<Event key={index} onEventClick={onEventClick} event={event} />);
-    });
-    return (<ScrollView>
-        <View>
-          {rows}
-          </View>
-      </ScrollView>);
-  }
-}
+    const items = events.reduce((acc, event) => {
+      let d = event.startDate.format('YYYY-MM-DD');
+      (acc[d] = (acc[d] || [])).push(event);
+      return acc;
+    },{});
+    if(!items['2017-03-10']) { items['2017-03-10']=[]}
+    if(!items['2017-03-11']) { items['2017-03-11']=[]}
+    if(!items['2017-03-12']) { items['2017-03-12']=[]}
 
-class Event extends Component {
-  constructor(props) {
-    super(props);
-  }
-  render() {
-    const {event, onEventClick} = this.props;
-    const colors = ["googleBlue","googleGreen","googleRed","googleYellow","googleGrey"];
-    const letter = event.event_name.substring(0,1);
-    const letterCode = event.event_name.charCodeAt(0);
-    const color = colors[letterCode%colors.length];
-    var inscriptionsView;
-    if(event.hasinscriptions) {
-      if(event.free) {
-        inscriptionsView = <Text style={{fontStyle:'italic',fontSize: 12}}>{event.participants}/{event.ticket_spaces} participants - Gratuit</Text>
-      } else {
-        inscriptionsView = <Text style={{fontStyle:'italic',fontSize: 12}}>{event.participants}/{event.ticket_spaces} participants - Surtaxe</Text>
-      }
-    } else {
-      inscriptionsView = <Text style={{fontStyle:'italic',fontSize: 12}}>Sur place</Text>
+    const inscriptionsView = (event) => {
+          if(event.hasinscriptions) {
+            if(event.free) {
+              return <Text>{event.participants}/{event.ticket_spaces} participants - Gratuit</Text>
+            } else {
+              return <Text>{event.participants}/{event.ticket_spaces} participants - Surtaxe</Text>
+            }
+          } else {
+            return <Text>Sur place</Text>
+          }
     }
-    return (<TouchableHighlight onPress={() => {onEventClick(event)}}>
-              <View style={{paddingLeft: 16, paddingRight:16, height: 72, flex: 1, flexDirection:'row'}}>
-              <View style={{paddingTop: 16}}>
-                  <Avatar backgroundColor={color} text={event.event_name.substring(0,1)} />
-                  </View>
-                  <View style={{flex:1, height: 80,paddingLeft: 16, flexDirection:'column', justifyContent:'center'}}>
-                    <Text numberOfLines={1} style={{fontWeight: 'bold'}}>{event.event_name}</Text>
-                    <Text style={{fontSize: 13}}>{event.dayWithCap} : {event.startTime} à {event.endTime}</Text>
-                    {inscriptionsView}
-                  </View>
-              </View>
-            </TouchableHighlight>);
-  }
-}
 
-class DaysFilter extends Component {
-  constructor(props) {
-    super(props);
-  }
-  render() {
-    const {onDayClick} = this.props;
-    return (<View style={{flexDirection: 'row',height:40}}>
-        <DayFilter text="TOUT" onDayClick={onDayClick} day={null} />
-        <Separator />
-        <DayFilter text="VENDREDI" onDayClick={onDayClick} day={5} />
-        <Separator />
-        <DayFilter text="SAMEDI" onDayClick={onDayClick} day={6} />
-        <Separator />
-        <DayFilter text="DIMANCHE" onDayClick={onDayClick} day={0} />
-      </View>);
-  }
-}
+    const categoriesSheet = StyleSheet.create({
+      body: {
+        color: '#AAAAAA'
+      }
+    });
 
-class Separator extends Component {
-  render() {
-    return (<View style={{borderWidth:1, borderColor:'white'}}></View>)
-  }
-}
-
-class DayFilter extends Component {
-  // static propTypes = {
-  //     text: PropTypes.string.isRequired
-  // }
-
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    const {text, day, onDayClick} = this.props;
-    return (<TouchableHighlight onPress={() => onDayClick(day)} style={styles.dayFilter}>
-            <View>
-              <Text style={styles.dayFilterText}>{text}</Text>
+    const eventView = (item, firstItemInDay) => {
+      let eventId = item.id;
+      const v = Object.values(ICONES_MAPPING)[Math.floor(Math.random() * 10) + 1]
+      return (
+      <TouchableHighlight style={[styles.item, {height: item.height, backgroundColor: hasReservationFor(item) ? '#ccffcc' : '#ffffff'}]} onPress={item => navigateTo('Event', eventId)}>
+        <View>
+          <View style={{flex:1,display:'flex',flexDirection:'row',marginBottom:12,width:"100%"}}>
+            <Text style={{fontSize:14}}>{item.startTime} - {item.endTime}</Text>
+            <View style={{flex:1}}>
+              <Image style={{width:48, height:48, alignSelf:'flex-end'}} source={v} />
             </View>
-          </TouchableHighlight>);
+          </View>
+          <Text style={{marginBottom:12,fontSize: 16}}>{item.event_name}</Text>
+          <Text style={{fontSize:13,color:'#AAA'}}>{item.categories.join(", ").replace(/&amp;/g, '&')}</Text>
+          {inscriptionsView(item)}
+        </View>
+      </TouchableHighlight>)}
+
+    let navv = this.props;
+
+    return <Agenda
+              items={items}
+              loadItemsForMonth={(month) => {console.log('trigger items loading')}}
+              onDayPress={(day)=>{}}
+              onDayChange={(day)=>{}}
+              selected={'2017-03-10'}
+              minDate={'2017-03-10'}
+              maxDate={'2017-03-12'}
+              pastScrollRange={50}
+              futureScrollRange={300}
+              renderItem={eventView}
+              renderEmptyDate={() => {return (<View />);}}
+              renderKnob={() => {return (<View />);}}
+              firstDay={1}
+              hideExtraDays={true}
+              rowHasChanged={(r1, r2) => true}
+              hideKnob={true}
+              theme={{}}
+              style={{}}
+            />
   }
 }
+
 
 const styles = StyleSheet.create({
-  dayFilter : {
-    flex:1,
-    backgroundColor: 'skyblue',
-    alignItems:'center',
-    justifyContent:'center',
+  item: {
+    backgroundColor: 'white',
+    flex: 1,
+    borderRadius: 5,
+    padding: 10,
+    marginRight: 10,
+    marginTop: 17
   },
-  dayFilterText : {
-    color: 'white'
+  emptyDate: {
+    height: 15,
+    flex:1,
+    paddingTop: 30
   }
 });

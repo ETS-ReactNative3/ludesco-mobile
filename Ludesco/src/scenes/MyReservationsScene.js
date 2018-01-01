@@ -1,14 +1,21 @@
 import React, { Component } from 'react';
-import { Text, View, ScrollView, TouchableHighlight, TextInput, Modal } from 'react-native';
+import { Text, View, ScrollView, TouchableHighlight, TextInput, Modal, StyleSheet } from 'react-native';
 import { Button } from 'react-native-material-ui';
 import store, { isConnected } from '../state/container.js';
 import { LoginModal } from '../components/loginModal';
+import { Agenda } from 'react-native-calendars';
 
 const base64 = require('base-64');
 
 var moment = require('moment');
 
 export default class MyReservationsScene extends Component {
+  static navigationOptions = ({ navigation }) => ({
+    header: ({screenProps }) => {
+      return screenProps.toolbar
+    }
+  });
+
   constructor(props) {
     super(props);
     const {isConnected} = props;
@@ -29,7 +36,7 @@ export default class MyReservationsScene extends Component {
     const {
       reservations,
       onReservationPress,
-      close
+      navigateTo
     } = this.props;
     const { loginModalVisible } = this.state;
 
@@ -40,14 +47,60 @@ export default class MyReservationsScene extends Component {
       childrens = <NoReservation />
     }
 
+    const items = reservations.reduce((acc, reservation) => {
+      let d = moment(reservation.event_start_date).format('YYYY-MM-DD');
+      (acc[d] = (acc[d] || [])).push(reservation);
+      return acc;
+    },{});
 
-    return <ScrollView style={{marginTop: 70}}>
-        <LoginModal
-          onRequestClose={close}
-          doConnect={(user) => this.doConnect(user)}
-          modalVisible={loginModalVisible} />
-        {childrens}
-        </ScrollView>
+    const eventView = (item, firstItemInDay) => {
+      let eventId = item.event_id;
+      let startDate = moment(item.event_start_date);
+      let endDate = moment(item.event_end_date);
+      let startTime = startDate.format('HH:mm');
+      let endTime = endDate.format('HH:mm');
+
+      return (
+        <TouchableHighlight style={[styles.item, {height: item.height, backgroundColor: '#ffffff'}]} onPress={item => navigateTo('Event', eventId)}>
+          <View>
+            <View style={{flex:1,display:'flex',flexDirection:'row',marginBottom:12,width:"100%"}}>
+              <Text style={{fontSize:14}}>{startTime} - {endTime}</Text>
+            </View>
+            <Text style={{marginBottom:12,fontSize: 16}}>{item.event_name}</Text>
+            </View>
+        </TouchableHighlight>
+      )
+    }
+
+    return <View style={{flex:1}}>
+      <LoginModal
+        onRequestClose={() => {
+          this.closeLoginModal();
+          navigateTo('Programme');
+        }}
+        doConnect={(user) => this.doConnect(user)}
+        modalVisible={loginModalVisible} />
+        <Agenda
+                items={items}
+                loadItemsForMonth={(month) => {}}
+                onDayPress={(day)=>{}}
+                onDayChange={(day)=>{}}
+                selected={'2017-03-10'}
+                minDate={'2017-03-10'}
+                maxDate={'2017-03-12'}
+                pastScrollRange={50}
+                futureScrollRange={200}
+                renderItem={eventView}
+                renderEmptyDate={() => {return (<View />);}}
+                renderKnob={() => {return (<View />);}}
+                firstDay={1}
+                hideExtraDays={true}
+                rowHasChanged={(r1, r2) => true}
+                hideKnob={true}
+                theme={{}}
+                style={{}}
+      />
+    </View>
   }
 }
 
@@ -76,3 +129,19 @@ class Reservation extends Component {
         </TouchableHighlight>);
   }
 }
+
+const styles = StyleSheet.create({
+  item: {
+    backgroundColor: 'white',
+    flex: 1,
+    borderRadius: 5,
+    padding: 10,
+    marginRight: 10,
+    marginTop: 17
+  },
+  emptyDate: {
+    height: 15,
+    flex:1,
+    paddingTop: 30
+  }
+});

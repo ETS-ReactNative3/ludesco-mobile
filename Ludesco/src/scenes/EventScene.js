@@ -7,6 +7,12 @@ import styles from '../components/styles';
 var HTMLView = require('react-native-htmlview');
 
 export default class EventScene extends Component {
+  static navigationOptions = ({ navigation }) => ({
+    header: ({screenProps }) => {
+      return screenProps.toolbar
+    }
+  });
+
   constructor(props) {
     super(props);
     this.state = {
@@ -125,19 +131,18 @@ class Event extends Component {
                        document.title = calculator.clientHeight;
                   </script>`;
     return (<Card>
+      <View style={{padding:12}}>
       <Text style={styles.eventTitle}>{event.event_name}</Text>
-        <Card.Body>
-        <WebView
+      <WebView
           automaticallyAdjustContentInsets={true}
           style={{height:height}}
           source={{html:html}}
           scrollEnabled={false}
           javaScriptEnabled={true}
           domStorageEnabled={true}
-          onNavigationStateChange={this.onNavigationStateChange.bind(this)}
-           />
-        </Card.Body>
+          onNavigationStateChange={this.onNavigationStateChange.bind(this)} />
         {cardButtons}
+      </View>
       </Card>);
   }
 }
@@ -147,15 +152,14 @@ class TakePart extends Component {
     const {event, askSubscribe, askUnsubscribe, hasReservation} = this.props;
     let button;
     if(hasReservation) {
-      button = <Button style={styles.cardButton} text="SE DESINSCRIRE" />;
+      //button = <Button style={styles.cardButton} text="SE DESINSCRIRE" />;
+      button = <Text>Déjà inscrit</Text>
     } else {
       button = <Button style={styles.cardButton} text="S'INSCRIRE" onPress={askSubscribe} />;
     }
-    return <Card.Actions position="right">
-            <View style={styles.cardActions}>
+    return <View style={styles.cardActions}>
               <Text style={styles.cardText}>{event.participants} / {event.ticket_spaces}</Text>
               {button}
-            </View>
-          </Card.Actions>;
+            </View>;
   }
 }

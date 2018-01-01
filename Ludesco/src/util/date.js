@@ -16,6 +16,6 @@ export function datetimeToISO(s) {
   return moment(s, 'DD.MM.YYYY HH:mm').toISOString();
 }
 
-function capitalize(s) {
+export function capitalize(s) {
   return s.charAt(0).toUpperCase() + s.substring(1);
 }

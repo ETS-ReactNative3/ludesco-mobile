@@ -1,4 +1,5 @@
 import { fetchJSON, fetchEvents, storeEvents, fetchEventsByDay } from '../util/http';
+import { NavigationActions } from 'react-navigation';
 
 const base64 = require('base-64');
 
@@ -6,6 +7,17 @@ var idFestival = 3167;
 
 const defaultHeaders = new Headers({'Content-Type':'application/json'});
 const uniqueId = require('react-native-unique-id')
+
+export function navigateTo(routeName, params = {}) {
+  return (dispatch) => {
+    const action = NavigationActions.navigate({
+      routeName: routeName,
+      params,
+      navTitle : routeName
+    })
+    return dispatch(action);
+  }
+}
 
 export function loadEvents(day, categories = []) {
   return (dispatch) => {
@@ -50,6 +62,14 @@ export function loadCustomGames() {
   }
 }
 
+export function loadStudioEvents() {
+  return (dispatch) => {
+    return fetchJSON('public/studio/events').then((events) => {
+      dispatch({type: 'FETCH_EVENTS_STUDIO_SUCCESS', studioEvents : events})
+    });
+  }
+}
+
 export function createCustomGame(game) {
   return (dispatch) => {
     return fetchJSON("public/games", {
@@ -88,6 +108,7 @@ export function subscribeEvent(subscription) {
 }
 
 export function unsubscribeEvent(subscription) {
+  console.warn('unsubscribeEvent')
   const {event_id, user_id} = subscription;
   var json = JSON.stringify(subscription);
   return (dispatch, getState) => {

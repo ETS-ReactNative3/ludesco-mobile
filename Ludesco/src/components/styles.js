@@ -2,7 +2,8 @@ import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   scrollView : {
-    marginTop: 70
+    paddingLeft: 12,
+    paddingRight: 12
   },
   eventTitle : {
     fontWeight: 'bold',
@@ -13,13 +14,12 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
     flexDirection: 'row',
     alignItems: 'center',
-    paddingLeft: 16,
+    marginTop: 12
   },
   cardButton : {
     width : 100
   },
   cardText : {
-    paddingLeft: 16,
     fontStyle: 'italic'
   }
 })
