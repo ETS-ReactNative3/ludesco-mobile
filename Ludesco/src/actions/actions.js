@@ -64,7 +64,7 @@ export function loadCustomGames() {
 
 export function loadStudioEvents() {
   return (dispatch) => {
-    return fetchJSON('public/studio/events').then((events) => {
+    return fetchJSON('public/studio/next-events').then((events) => {
       dispatch({type: 'FETCH_EVENTS_STUDIO_SUCCESS', studioEvents : events})
     });
   }
