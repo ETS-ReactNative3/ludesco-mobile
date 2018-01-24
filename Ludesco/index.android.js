@@ -13,12 +13,12 @@ import { Toolbar, Subheader, Avatar, Drawer, Divider, COLOR, TYPO, ThemeProvider
 import { Provider } from 'react-redux';
 import AndroidDrawerViewContainer from './src/scenes/AndroidDrawerView.js';
 import NotificationModal from './src/notifications/NotificationModal';
-import Main from './src/scenes/Main.js';
 import store, { RootNavigator } from './src/state/container.js'
 import { LocaleConfig } from 'react-native-calendars';
 import { addNavigationHelpers, NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 import { back } from './src/actions/actions.js';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 LocaleConfig.locales['fr'] = {
   monthNames: ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'],
@@ -33,7 +33,11 @@ LocaleConfig.defaultLocale = 'fr';
 class Ludesco extends Component {
   constructor(props) {
     super(props);
-    this.state = {drawer: null};
+    this.state = {drawer: null, loading : false};
+    store.subscribe(() => {
+      let loading = store.getState().loading;
+      this.setState({loading});
+    });
   }
   setDrawer(drawer) {
     this.setState({ drawer});
@@ -52,6 +56,8 @@ class Ludesco extends Component {
 
     return <Provider store={store}>
             <ThemeProvider uiTheme={{}}>
+              <View style={{flex:1}}>
+              <Spinner visible={this.state.loading} textStyle={{color: '#FFF'}} />
               <DrawerLayoutAndroid
                 drawerPosition={DrawerLayoutAndroid.positions.Left}
                 renderNavigationView={() =>
@@ -63,6 +69,7 @@ class Ludesco extends Component {
                   <NotificationModal onClick={() => store.dispatch({type:'NOTIFICATION_ACKNOWLEDGE'})} />
                   <TestWithState openDrawer={() => this.openDrawer()} />
                 </DrawerLayoutAndroid>
+              </View>
               </ThemeProvider>
             </Provider>
   }

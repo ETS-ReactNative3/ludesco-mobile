@@ -63,21 +63,21 @@ function dataReducer(state, action) {
       let routeName = nextState.routes[nextState.index].routeName;
       return Object.assign({},state,{search:''},{nav:nextState,navTitle:toolbarTitle(routeName)});
     case 'FETCH_EVENTS_REQUEST':
-      return Object.assign({},state,{events:[]});
+      return Object.assign({},state,{events:[], loading: true});
     case 'FETCH_EVENTS_SUCCESS':
-      return Object.assign({},state,{events:action.events});
+      return Object.assign({},state,{events:action.events, loading: false});
     case 'FETCH_EVENT_SUCCESS':
-      return Object.assign({},state,{event:action.event});
+      return Object.assign({},state,{event:action.event, loading: false});
     case 'FETCH_EVENT_REQUEST':
-      return Object.assign({},state);
+      return Object.assign({},state, {loading: true});
     case 'FETCH_RESERVATIONS_REQUEST':
-      return Object.assign({},state);
+      return Object.assign({},state, {loading: true});
     case 'FETCH_RESERVATIONS_SUCCESS':
-      return Object.assign({},state,{reservations:action.reservations});
+      return Object.assign({},state,{reservations:action.reservations, loading: false});
     case 'FETCH_CUSTOM_GAMES_SUCCESS':
-      return Object.assign({},state,{customGames:action.customGames});
+      return Object.assign({},state,{customGames:action.customGames , loading: false});
     case 'FETCH_EVENTS_STUDIO_SUCCESS':
-      return Object.assign({},state,{studioEvents: action.studioEvents})
+      return Object.assign({},state,{studioEvents: action.studioEvents, loading: false})
     case 'LOGIN_SUCCESS':
       return Object.assign({},state,{user:action.user});
     case 'CATEGORIES_LOADED' :

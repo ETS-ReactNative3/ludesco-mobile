@@ -14,13 +14,13 @@ import { Agenda, LocaleConfig } from 'react-native-calendars';
 import HTMLView from 'react-native-htmlview';
 
 const ICONES_MAPPING = {
-    "Escape Room" : require("../img/EscapeRoom.png"),
+    "Escape Games" : require("../img/EscapeRoom.png"),
     "Fablab" : require("../img/Fablab.png"),
-    "Familles" : require("../img/Familles.png"),
+    "Espace Familles" : require("../img/Familles.png"),
     "Figurines" : require("../img/Figurines.png"),
-    "GameDesign" : require("../img/GameDesign.png"),
-    "GN" : require("../img/GN.png"),
-    "JdR" : require("../img/JdR.png"),
+    "Game design &amp; Prototypes" : require("../img/GameDesign.png"),
+    "GNs &amp; Murder Party" : require("../img/GN.png"),
+    "Jeux de rôle" : require("../img/JdR.png"),
     "Jeux de société" : require("../img/JeuxDeSociete.png"),
     "Jeux traditionnels" : require("../img/JeuxTraditionnels.png"),
     "Nouveautés" : require("../img/Nouveautes.png")
@@ -51,6 +51,40 @@ export default class ProgrammeScene extends Component {
     }
 }
 
+class EventView extends Component {
+    render() {
+      const inscriptionsView = (event) => {
+            if(event.hasinscriptions) {
+              if(event.free) {
+                return <Text>{event.participants}/{event.ticket_spaces} participants - Gratuit</Text>
+              } else {
+                return <Text>{event.participants}/{event.ticket_spaces} participants - Surtaxe</Text>
+              }
+            } else {
+              return <Text>Sur place</Text>
+            }
+      }
+
+      const {item, hasReservationFor, navigateTo} = this.props;
+      let eventId = item.id;
+      let categories = item.categories.filter(c => c!='Français');
+      const v = ICONES_MAPPING[categories[0]]
+      return (<TouchableHighlight style={[styles.item, {height: item.height, backgroundColor: hasReservationFor(item) ? '#ccffcc' : '#ffffff'}]} onPress={item => navigateTo('Event', eventId)}>
+        <View>
+          <View style={{flex:1,display:'flex',flexDirection:'row',marginBottom:12,width:"100%"}}>
+            <Text style={{fontSize:14}}>{item.startTime} - {item.endTime}</Text>
+            <View style={{flex:1}}>
+              <Image style={{width:48, height:48, alignSelf:'flex-end'}} source={v} />
+            </View>
+          </View>
+          <Text style={{marginBottom:12,fontSize: 16}}>{item.event_name}</Text>
+          <Text style={{fontSize:13,color:'#AAA'}}>{categories.join(", ").replace(/&amp;/g, '&')}</Text>
+          {inscriptionsView(item)}
+        </View>
+      </TouchableHighlight>)
+    }
+}
+
 class ProgrammeScrollView extends Component {
   render() {
     const {
@@ -65,21 +99,9 @@ class ProgrammeScrollView extends Component {
       (acc[d] = (acc[d] || [])).push(event);
       return acc;
     },{});
-    if(!items['2017-03-10']) { items['2017-03-10']=[]}
-    if(!items['2017-03-11']) { items['2017-03-11']=[]}
-    if(!items['2017-03-12']) { items['2017-03-12']=[]}
-
-    const inscriptionsView = (event) => {
-          if(event.hasinscriptions) {
-            if(event.free) {
-              return <Text>{event.participants}/{event.ticket_spaces} participants - Gratuit</Text>
-            } else {
-              return <Text>{event.participants}/{event.ticket_spaces} participants - Surtaxe</Text>
-            }
-          } else {
-            return <Text>Sur place</Text>
-          }
-    }
+    if(!items['2018-03-16']) { items['2018-03-16']=[]}
+    if(!items['2018-03-17']) { items['2018-03-17']=[]}
+    if(!items['2018-03-18']) { items['2018-03-18']=[]}
 
     const categoriesSheet = StyleSheet.create({
       body: {
@@ -87,45 +109,20 @@ class ProgrammeScrollView extends Component {
       }
     });
 
-    const eventView = (item, firstItemInDay) => {
-      let eventId = item.id;
-      const v = Object.values(ICONES_MAPPING)[Math.floor(Math.random() * 10) + 1]
-      return (
-      <TouchableHighlight style={[styles.item, {height: item.height, backgroundColor: hasReservationFor(item) ? '#ccffcc' : '#ffffff'}]} onPress={item => navigateTo('Event', eventId)}>
-        <View>
-          <View style={{flex:1,display:'flex',flexDirection:'row',marginBottom:12,width:"100%"}}>
-            <Text style={{fontSize:14}}>{item.startTime} - {item.endTime}</Text>
-            <View style={{flex:1}}>
-              <Image style={{width:48, height:48, alignSelf:'flex-end'}} source={v} />
-            </View>
-          </View>
-          <Text style={{marginBottom:12,fontSize: 16}}>{item.event_name}</Text>
-          <Text style={{fontSize:13,color:'#AAA'}}>{item.categories.join(", ").replace(/&amp;/g, '&')}</Text>
-          {inscriptionsView(item)}
-        </View>
-      </TouchableHighlight>)}
-
     let navv = this.props;
 
     return <Agenda
               items={items}
-              loadItemsForMonth={(month) => {console.log('trigger items loading')}}
-              onDayPress={(day)=>{}}
-              onDayChange={(day)=>{}}
-              selected={'2017-03-10'}
-              minDate={'2017-03-10'}
-              maxDate={'2017-03-12'}
-              pastScrollRange={50}
-              futureScrollRange={300}
-              renderItem={eventView}
+              selected={'2018-03-16'}
+              minDate={'2018-03-16'}
+              maxDate={'2018-03-18'}
+              renderItem={(item, firstItemInDay) => <EventView item={item} hasReservationFor={hasReservationFor} navigateTo={navigateTo} />}
               renderEmptyDate={() => {return (<View />);}}
               renderKnob={() => {return (<View />);}}
               firstDay={1}
               hideExtraDays={true}
-              rowHasChanged={(r1, r2) => true}
+              rowHasChanged={(r1, r2) => { return r1.id!==r2.id;}}
               hideKnob={true}
-              theme={{}}
-              style={{}}
             />
   }
 }

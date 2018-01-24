@@ -85,9 +85,9 @@ export default class MyReservationsScene extends Component {
                 loadItemsForMonth={(month) => {}}
                 onDayPress={(day)=>{}}
                 onDayChange={(day)=>{}}
-                selected={'2017-03-10'}
-                minDate={'2017-03-10'}
-                maxDate={'2017-03-12'}
+                selected={'2018-03-16'}
+                minDate={'2018-03-16'}
+                maxDate={'2018-03-18'}
                 pastScrollRange={50}
                 futureScrollRange={200}
                 renderItem={eventView}

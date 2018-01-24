@@ -94,8 +94,8 @@ android {
         applicationId "ch.ludesco"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 5
-        versionName "8.1.1"
+        versionCode 9
+        versionName "9.0.3"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }

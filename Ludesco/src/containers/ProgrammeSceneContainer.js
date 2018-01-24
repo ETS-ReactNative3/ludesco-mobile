@@ -2,11 +2,13 @@ import { connect } from 'react-redux';
 import ProgrammeScene from '../scenes/ProgrammeScene';
 import { loadEvents, loadEvent, navigateTo } from '../actions/actions';
 import Fuse from 'fuse.js';
+import { createSelector } from 'reselect';
 
 var moment = require('moment');
 require('moment/locale/fr');
 
-const getEvents = (events, categories = [], search = "") => {
+const getEvents = createSelector([state => state.events, state => state.categories, state => state.search],
+  (events, categories = [], search = "") => {
   function isInCategories(event) {
     const selectedCategories = categories.filter(([name,checked]) => checked);
     if(selectedCategories.length===0) return true;
@@ -59,11 +61,11 @@ const getEvents = (events, categories = [], search = "") => {
   } else {
     return [];
   }
-}
+});
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    events: getEvents(state.events,state.categories,state.search),
+    events: getEvents(state),
     categories : state.categories,
     day : state.day,
     search : state.search,
@@ -83,8 +85,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch({type:'DAY_FILTER',day: day})
     },
     navigateTo : function(routeName, eventId) {
-      dispatch(loadEvent(eventId))
-      dispatch(navigateTo(routeName, {eventId}))
+      dispatch(loadEvent(eventId)).then(() => {
+        dispatch(navigateTo(routeName, {eventId}))
+      })
     }
   }
 }
