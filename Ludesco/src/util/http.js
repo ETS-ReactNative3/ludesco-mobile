@@ -1,8 +1,8 @@
 import { AsyncStorage } from 'react-native';
 const moment = require('moment');
 
-const URL = 'https://api.ludesco.ch/';
-//const URL = 'http://10.0.2.2:3000/';
+//const URL = 'https://api.ludesco.ch/';
+const URL = 'http://10.0.2.2:3000/';
 
 export function fetchJSON(url, opts) {
   return fetch(URL+url, opts)

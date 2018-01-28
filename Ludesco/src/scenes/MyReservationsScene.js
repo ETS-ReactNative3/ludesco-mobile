@@ -52,6 +52,9 @@ export default class MyReservationsScene extends Component {
       (acc[d] = (acc[d] || [])).push(reservation);
       return acc;
     },{});
+    if(!items['2018-03-16']) { items['2018-03-16']=[]}
+    if(!items['2018-03-17']) { items['2018-03-17']=[]}
+    if(!items['2018-03-18']) { items['2018-03-18']=[]}
 
     const eventView = (item, firstItemInDay) => {
       let eventId = item.event_id;
