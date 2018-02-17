@@ -26,11 +26,14 @@ export class LoginModal extends Component {
               Utilisateur
             </Text>
             <TextInput
-              onChangeText={(value) => this.onChangeText('username', value)} />
+              onChangeText={(value) => this.onChangeText('username', value)}
+              style={{height: 40, borderColor: 'gray', borderWidth: 1}} />
             <Text>
               Mot de passe
             </Text>
             <TextInput
+              autoCorrect={false}
+              style={{height: 40, borderColor: 'gray', borderWidth: 1}}
               secureTextEntry={true}
               onChangeText={(value) => this.onChangeText('password', value)} />
             <Text>Pour obtenir un identifiant, va créer un compte sur <Text style={{color:'blue'}} onPress={() => Linking.openURL('https://www.ludesco.ch/wp-login.php?action=register')}>le site de Ludesco</Text></Text>
