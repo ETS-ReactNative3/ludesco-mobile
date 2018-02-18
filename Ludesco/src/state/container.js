@@ -10,6 +10,7 @@ import ProgrammeSceneContainer from '../containers/ProgrammeSceneContainer.js';
 import EventSceneContainer from '../containers/EventSceneContainer.js';
 import MyReservationsSceneContainer from '../containers/MyReservationsSceneContainer.js';
 import StudioSceneContainer from '../containers/StudioSceneContainer.js';
+import CreateAccountContainer from '../containers/CreateAccountContainer.js';
 
 const navMiddleware = createReactNavigationReduxMiddleware(
   "root",
@@ -29,6 +30,9 @@ export const RootNavigator = StackNavigator({
   },
   Event : {
     screen : EventSceneContainer
+  },
+  CreateAccount : {
+    screen: CreateAccountContainer
   }
 });
 
@@ -52,7 +56,10 @@ const initialState = {
 function toolbarTitle(routeName) {
   if(routeName==='Event') {
     return 'Programme';
-  } else {
+  } else if(routeName==='CreateAccount') {
+    return "Creer un compte"
+  }
+   else {
     return routeName;
   }
 }
@@ -109,7 +116,6 @@ function dataReducer(state, action) {
     case 'SEARCH':
       return Object.assign({}, state,{search: action.search});
     default:
-      console.warn(action.type);
       return Object.assign({},initialState);
   }
 }

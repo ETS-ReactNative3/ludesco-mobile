@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import EventScene from '../scenes/EventScene.js';
-import { loadEvent, login, loadReservations, subscribeEvent, unsubscribeEvent } from '../actions/actions.js';
+import { loadEvent, login, loadReservations, subscribeEvent, unsubscribeEvent, navigateTo } from '../actions/actions.js';
 import store, { isConnected } from '../state/container.js';
 import { hasReservationsFor } from '../domain/event';
 
@@ -37,6 +37,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       return dispatch(unsubscribeEvent(unsubscription))
         .then((reservations) => dispatch(loadReservations()))
         .then(() => dispatch(loadEvent(unsubscription.event_id)));
+    },
+    navigateTo(routeName) {
+      return dispatch(navigateTo(routeName));
     }
   }
 }

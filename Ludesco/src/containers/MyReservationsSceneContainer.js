@@ -26,7 +26,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       });
     },
     navigateTo(routeName, eventId) {
-      dispatch(loadEvent(eventId))
       dispatch(navigateTo(routeName, {eventId}))
     }
   }
