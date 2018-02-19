@@ -81,6 +81,10 @@ export default class MyReservationsScene extends Component {
           this.closeLoginModal();
           navigateTo('Programme');
         }}
+        onCreateAccount={() => {
+          this.closeLoginModal();
+          navigateTo('CreateAccount');
+        }}
         doConnect={(user) => this.doConnect(user)}
         modalVisible={loginModalVisible} />
         <Agenda
