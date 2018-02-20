@@ -13,7 +13,7 @@ import { Toolbar, Subheader, Avatar, Drawer, Divider, COLOR, TYPO, ThemeProvider
 import { Provider } from 'react-redux';
 import AndroidDrawerViewContainer from './src/scenes/AndroidDrawerView.js';
 import NotificationModal from './src/notifications/NotificationModal';
-import store, { RootNavigator } from './src/state/container.js'
+import store, { RootNavigator, addListener } from './src/state/container.js'
 import { LocaleConfig } from 'react-native-calendars';
 import { addNavigationHelpers, NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
@@ -110,7 +110,8 @@ class Test extends Component {
           }} />;
     return <RootNavigator navigation={addNavigationHelpers({
       dispatch: this.props.dispatch,
-      state: this.props.nav
+      state: this.props.nav,
+      addListener
     })} screenProps={{toolbar: toolbar}} />
   }
 }

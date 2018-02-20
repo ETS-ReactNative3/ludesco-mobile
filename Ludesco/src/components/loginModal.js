@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { Text, View, TextInput, Modal, Linking } from 'react-native';
+import { Text, View, TextInput, Modal, Platform } from 'react-native';
 import styles from './styles';
 import { Card, Button } from 'react-native-material-ui';
 
@@ -22,13 +22,13 @@ export class LoginModal extends Component {
             </Text>
             <TextInput
               onChangeText={(value) => this.onChangeText('username', value)}
-              style={{height: 40, borderColor: 'gray', borderWidth: 1}} />
+              style={Platform.select({ios: {height: 40, borderColor: 'gray', borderWidth: 1}})} />
             <Text>
               Mot de passe
             </Text>
             <TextInput
               autoCorrect={false}
-              style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+              style={Platform.select({ios: {height: 40, borderColor: 'gray', borderWidth: 1}})}
               secureTextEntry={true}
               onChangeText={(value) => this.onChangeText('password', value)} />
             <Text>Pour obtenir un identifiant, va créer un compte sur <Text style={{color:'blue'}} onPress={() => onCreateAccount()}>le site de Ludesco</Text></Text>
