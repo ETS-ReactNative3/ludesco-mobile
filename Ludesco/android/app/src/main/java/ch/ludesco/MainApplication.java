@@ -3,6 +3,7 @@ package ch.ludesco;
 import android.app.Application;
 import android.util.Log;
 
+import com.facebook.react.BuildConfig;
 import com.facebook.react.ReactApplication;
 //import com.oblador.vectoricons.VectorIconsPackage;
 //import com.airbnb.android.react.maps.MapsPackage;

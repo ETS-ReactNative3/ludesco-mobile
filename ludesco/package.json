@@ -1,0 +1,41 @@
+{
+  "main": "node_modules/expo/AppEntry.js",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "eject": "expo eject"
+  },
+  "dependencies": {
+    "expo": "^32.0.0",
+    "react": "16.5.0",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
+    "base-64": "0.1.0",
+    "dateformat": "3.0.2",
+    "fuse.js": "^3.2.0",
+    "moment": "^2.19.1",
+    "moment-timezone": "0.5.14",
+    "react-native-action-button": "2.8.1",
+    "react-native-add-calendar-event": "git+https://github.com/DiksonSamuel/react-native-add-calendar-event.git",
+    "react-native-calendars": "^1.9.2",
+    "react-native-datepicker": "1.6.0",
+    "react-native-fcm": "10.0.3",
+    "react-native-htmlview": "0.12.1",
+    "react-native-loading-spinner-overlay": "^0.5.2",
+    "react-native-material-ui": "^1.14.0",
+    "react-native-unique-id": "1.0.4",
+    "react-native-vector-icons": "^6.2.0",
+    "react-navigation": "1.0.3",
+    "react-navigation-redux-helpers": "^1.0.1",
+    "react-redux": "5.0.6",
+    "redux": "3.7.2",
+    "redux-thunk": "2.2.0",
+    "redux-watch": "1.1.1",
+    "reselect": "^3.0.1",
+    "watchman": "^0.1.8"
+  },
+  "devDependencies": {
+    "babel-preset-expo": "^5.0.0"
+  },
+  "private": true
+}
