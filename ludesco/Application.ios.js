@@ -24,10 +24,6 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import Drawer from 'react-native-drawer';
 import { Font } from 'expo';
 
-global.alert = (message, title) => {
-  setTimeout(() => Alert.alert(title || "Oops!", message), 500);
-};
-
 LocaleConfig.locales['fr'] = {
   monthNames: ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'],
   monthNamesShort: ['Janv.','Févr.','Mars','Avril','Mai','Juin','Juil.','Août','Sept.','Oct.','Nov.','Déc.'],
