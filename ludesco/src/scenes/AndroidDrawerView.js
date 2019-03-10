@@ -1,5 +1,5 @@
 import React, { Component, PropTypes} from 'react';
-import { View, Text, Image, ScrollView } from 'react-native';
+import { View, Text, Image, ScrollView, Platform } from 'react-native';
 import { Avatar, Drawer, Divider, COLOR, TYPO, PRIMARY_COLORS, Checkbox } from 'react-native-material-ui';
 import store,{isConnected} from '../state/container';
 import { toggleNotificationsInfo,
@@ -79,7 +79,7 @@ class AndroidDrawerView extends Component {
           });
         }
         return (
-            <ScrollView>
+            <ScrollView style={{marginTop: Platform.OS === 'ios' ? 40 : 0}}>
             <Drawer theme='light'>
                 <Drawer.Header image={<Image source={require('./../img/nav.png')} />}>
                 </Drawer.Header>

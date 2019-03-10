@@ -66,6 +66,8 @@ function toolbarTitle(routeName) {
   }
 }
 
+let inc = 0;
+
 function dataReducer(state, action) {
   switch(action.type) {
     case NavigationActions.NAVIGATE:
@@ -102,23 +104,17 @@ function dataReducer(state, action) {
     case 'FETCH_RESERVATIONS_REQUEST':
       return Object.assign({},state, {loading: true});
     case 'FETCH_RESERVATIONS_SUCCESS':
-      state.profile.reservations = action.reservations;
-      state.loading = false;
-      return state;
+      return {...state, loading: false, profile: {...state.profile, reservations: action.reservations}};
     case 'FETCH_CUSTOM_GAMES_SUCCESS':
       return Object.assign({},state,{customGames:action.customGames , loading: false});
     case 'FETCH_EVENTS_STUDIO_SUCCESS':
       return Object.assign({},state,{studioEvents: action.studioEvents, loading: false})
     case 'LOGIN_SUCCESS':
-      state.profile.user = action.user;
-      return state;
+      return {...state, loading: false, profile: {...state.profile, user: action.user}};
     case 'LOGOUT':
-      state.profile.user = null;
-      state.profile.reservations = [];
-      return state;
+      return {...state, loading: false, profile: {...state.profile, user: null, reservations: [] }};
     case 'CATEGORIES_LOADED' :
-      state.profile.categories = action.categories;
-      return Object.assign({}, state);
+      return {...state, loading: false, profile: {...state.profile, categories: action.categories}};
     case 'DAY_FILTER' :
       return Object.assign({},state,{day:action.day});
     case 'DEVICE_LOADED' :

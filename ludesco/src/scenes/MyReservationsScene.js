@@ -26,7 +26,11 @@ export default class MyReservationsScene extends Component {
   doConnect(user) {
     const {doConnect} = this.props;
     doConnect(user).then((r) => {
-      if(r) this.closeLoginModal();
+      if(r) {
+          setTimeout(() => {
+            this.closeLoginModal();
+          }, 500);
+      };
       return r;
     });
   }

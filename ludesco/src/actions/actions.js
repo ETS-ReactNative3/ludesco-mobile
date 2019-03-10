@@ -102,6 +102,7 @@ export function subscribeEvent(subscription) {
   return (dispatch, getState) => {
     const user = getState().profile.user;
     const query = `public/secured/users/${user_id}/events/${event_id}/subscribe`;
+    console.warn(query);
     return fetchJSON(query, {
       method : 'POST',
       body : json,

@@ -25,7 +25,9 @@ export default class EventScene extends Component {
     doConnect(event, user)
       .then((r) => {
           if(r) {
-            this.closeLoginModal()
+            setTimeout(() => {
+              this.closeLoginModal();
+            }, 500);
           }
       });
   }

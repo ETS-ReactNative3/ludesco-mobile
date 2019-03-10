@@ -19,13 +19,15 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       return dispatch(login(user))
         .then(() => dispatch(loadReservations()))
         .then(() => {
-          const {reservations, profile} = store.getState();
-          if(!hasReservationsFor(event, reservations)) {
+          const {profile} = store.getState();
+          if(!hasReservationsFor(event, profile.reservations)) {
             return dispatch(subscribeEvent({user_id: profile.user.id, event_id: event.id}));
           }
         })
         .then(() => dispatch(loadReservations()))
-        .then(() => dispatch(loadEvent(event.id)));
+        .then(() => dispatch(loadEvent(event.id)))
+        .then(() => true)
+        .catch(() => false);
     },
     subscribe : function(subscription) {
       return dispatch(subscribeEvent(subscription))
