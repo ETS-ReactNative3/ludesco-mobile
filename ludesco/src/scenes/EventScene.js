@@ -26,7 +26,7 @@ export default class EventScene extends Component {
       .then((r) => {
           if(r) {
             setTimeout(() => {
-              //this.closeLoginModal();
+              this.closeLoginModal();
             }, 500);
           }
       });
@@ -94,6 +94,8 @@ class Event extends Component {
       htmlEvent = "";
     }
 
+    let eventName = event.event_name;
+
     //http://flexwork.io/blog/webview-height-html-content-react-native/
     var html = `<div>${htmlEvent}</div>
               <style>
@@ -138,7 +140,7 @@ class Event extends Component {
                   </script>`;
     return (<Card>
       <View style={{padding:12}}>
-      <Text style={styles.eventTitle}>{event.event_name}</Text>
+      <Text style={styles.eventTitle}>ASD{eventName}YXC</Text>
       <WebView
           automaticallyAdjustContentInsets={true}
           style={{height:height}}

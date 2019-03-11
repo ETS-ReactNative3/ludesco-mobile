@@ -44,12 +44,11 @@ export default class ProgrammeScene extends Component {
 	render() {
     const {
       events,
-      onEventClick,
       onDayClick,
       navigate,
       hasReservationFor
     } = this.props;
-		  return <ProgrammeScrollView onEventClick={onEventClick} navigate={navigate} events={events} hasReservationFor={hasReservationFor} />
+		  return <ProgrammeScrollView navigate={navigate} events={events} hasReservationFor={hasReservationFor} />
     }
 }
 
@@ -91,7 +90,6 @@ class ProgrammeScrollView extends Component {
   render() {
     const {
       events,
-      onEventClick,
       navigate,
       hasReservationFor
     } = this.props;

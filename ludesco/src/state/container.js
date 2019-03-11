@@ -17,17 +17,6 @@ const initialState = {
   search : ""
 }
 
-function toolbarTitle(routeName) {
-  if(routeName==='Event') {
-    return 'Programme';
-  } else if(routeName==='CreateAccount') {
-    return "Creer un compte"
-  }
-   else {
-    return routeName;
-  }
-}
-
 function dataReducer(state, action) {
   switch(action.type) {
     case 'BOOTSTRAP':

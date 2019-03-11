@@ -80,9 +80,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     beforeDisplay : function(day, categories) {
       dispatch(loadEvents(day, categories));
     },
-    onEventClick : function(event) {
-      ownProps.navigation.navigate(routeName);
-    },
     onDayClick : function(day) {
       dispatch({type:'DAY_FILTER',day: day})
     },
