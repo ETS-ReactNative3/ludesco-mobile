@@ -9,17 +9,6 @@ const defaultHeaders = new Headers({'Content-Type':'application/json'});
 const uniqueId = require('react-native-unique-id')
 
 
-export function navigateTo(routeName, params = {}) {
-  return (dispatch) => {
-    const action = NavigationActions.navigate({
-      routeName: routeName,
-      params,
-      navTitle : routeName
-    })
-    return dispatch(action);
-  }
-}
-
 export function loadEvents(day, categories = []) {
   return (dispatch) => {
     dispatch({type: 'FETCH_EVENTS_REQUEST'});

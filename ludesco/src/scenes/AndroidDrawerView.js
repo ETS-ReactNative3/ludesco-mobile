@@ -1,13 +1,14 @@
 import React, { Component, PropTypes} from 'react';
 import { View, Text, Image, ScrollView, Platform } from 'react-native';
+import { NavigationActions } from 'react-navigation';
 import { Avatar, Drawer, Divider, COLOR, TYPO, PRIMARY_COLORS, Checkbox } from 'react-native-material-ui';
 import store,{isConnected} from '../state/container';
 import { toggleNotificationsInfo,
          toggleNotificationsParties,
-         navigateTo,
          logout,
          loadReservations} from '../actions/actions';
 import { connect } from 'react-redux';
+import NavigationService from '../navigation/NavigationService.js';
 
 var HTMLView = require('react-native-htmlview');
 
@@ -22,14 +23,8 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
    return {
-     toggleNotificationsInfo() {
-       dispatch(toggleNotificationsInfo());
-     },
-     toggleNotificationsParties() {
-       dispatch(toggleNotificationsParties())
-     },
-     navigateTo(routeName) {
-       dispatch(navigateTo(routeName));
+     navigate(routeName) {
+       NavigationService.navigate(routeName);
        ownProps.close();
      }
    }
@@ -56,17 +51,17 @@ class AndroidDrawerView extends Component {
         items = [{
             icon: 'list',
             value: 'Programme',
-            onPress: () => this.props.navigateTo('Programme')
+            onPress: () => this.props.navigate('Programme')
         }, {
             icon: 'date-range',
             value: 'Agenda',
             onPress: () => {
               if(user) {
                 store.dispatch(loadReservations()).then(() => {
-                  this.props.navigateTo('Agenda')
+                  this.props.navigate('Agenda');
                 });
               } else {
-                this.props.navigateTo('Agenda');
+                this.props.navigate('Agenda');
               }
             }
         }];

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import ProgrammeScene from '../scenes/ProgrammeScene';
-import { loadEvents, loadEvent, navigateTo } from '../actions/actions';
+import { loadEvents, loadEvent } from '../actions/actions';
 import Fuse from 'fuse.js';
 import { createSelector } from 'reselect';
 
@@ -81,14 +81,14 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch(loadEvents(day, categories));
     },
     onEventClick : function(event) {
-      this.ownProps.navigation.navigate(routeName);
+      ownProps.navigation.navigate(routeName);
     },
     onDayClick : function(day) {
       dispatch({type:'DAY_FILTER',day: day})
     },
-    navigateTo : function(routeName, eventId) {
+    navigate : function(routeName, eventId) {
       dispatch(loadEvent(eventId)).then(() => {
-        dispatch(navigateTo(routeName, {eventId}))
+        ownProps.navigation.navigate(routeName, {eventId});
       })
     }
   }

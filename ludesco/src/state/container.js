@@ -1,45 +1,7 @@
 import thunkMiddleware from 'redux-thunk';
 import { createStore, applyMiddleware, combineReducers } from 'redux';
-import { StackNavigator, AppNavigator, NavigationActions } from 'react-navigation';
-import {
-  createReduxBoundAddListener,
-  createReactNavigationReduxMiddleware,
-} from 'react-navigation-redux-helpers';
-
-import ProgrammeSceneContainer from '../containers/ProgrammeSceneContainer.js';
-import EventSceneContainer from '../containers/EventSceneContainer.js';
-import MyReservationsSceneContainer from '../containers/MyReservationsSceneContainer.js';
-import StudioSceneContainer from '../containers/StudioSceneContainer.js';
-import CreateAccountContainer from '../containers/CreateAccountContainer.js';
-
-const navMiddleware = createReactNavigationReduxMiddleware(
-  "root",
-  state => state.nav,
-);
-export const addListener = createReduxBoundAddListener("root");
-
-export const RootNavigator = StackNavigator({
-  Programme : {
-    screen: ProgrammeSceneContainer
-  },
-  Agenda : {
-    screen: MyReservationsSceneContainer
-  },
-  Studio : {
-    screen: StudioSceneContainer
-  },
-  Event : {
-    screen : EventSceneContainer
-  },
-  CreateAccount : {
-    screen: CreateAccountContainer
-  }
-});
-
 
 const initialState = {
-  nav : RootNavigator.router.getStateForAction(RootNavigator.router.getActionForPathAndParams('Programme')),
-  navTitle : 'Programme',
   event : {},
   profile : {
     categories: [],
@@ -66,25 +28,8 @@ function toolbarTitle(routeName) {
   }
 }
 
-let inc = 0;
-
 function dataReducer(state, action) {
   switch(action.type) {
-    case NavigationActions.NAVIGATE:
-      let routes = state.nav.routes;
-      let newIndex = routes.findIndex((r) => r.routeName === action.routeName);
-      if(newIndex!==-1) {
-          let newRoutes = routes.slice(0,newIndex+1);
-          return Object.assign({},state,{search:'', navTitle: toolbarTitle(action.routeName)},{nav:RootNavigator.router.getStateForAction(action,{index:newIndex, routes: newRoutes})});
-      } else {
-        return Object.assign({},state,{search:'', navTitle: toolbarTitle(action.routeName)},{nav:RootNavigator.router.getStateForAction(action,state.nav)});
-      }
-    case NavigationActions.BACK:
-      let nextState = RootNavigator.router.getStateForAction(action,state.nav);
-      let routeName = nextState.routes[nextState.index].routeName;
-      return Object.assign({},state,{search:''},{nav:nextState,navTitle:toolbarTitle(routeName)});
-    case NavigationActions.COMPLETE_TRANSITION:
-      return state;
     case 'BOOTSTRAP':
       if(action.profile) {
         state.profile = action.profile;
@@ -130,10 +75,15 @@ function dataReducer(state, action) {
     case 'SEARCH':
       return Object.assign({}, state,{search: action.search});
     default:
-      return Object.assign({},initialState);
+      if(!state) {
+        return Object.assign({},initialState);
+      } else {
+        return Object.assign({},state);
+      }
   }
 }
-let store = createStore(dataReducer, applyMiddleware(thunkMiddleware), applyMiddleware(navMiddleware));
+
+let store = createStore(dataReducer, applyMiddleware(thunkMiddleware));
 
 export default store;
 

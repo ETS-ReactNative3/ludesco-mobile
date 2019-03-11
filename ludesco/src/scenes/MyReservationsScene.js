@@ -40,17 +40,8 @@ export default class MyReservationsScene extends Component {
   render() {
     const {
       reservations,
-      onReservationPress,
-      navigateTo
-    } = this.props;
+      navigate }= this.props;
     const { loginModalVisible } = this.state;
-
-    let childrens;
-    if(reservations.length>0) {
-      childrens = reservations.map((e,i) => <Reservation event={e} key={i} onPress={onReservationPress} />);
-    } else {
-      childrens = <NoReservation />
-    }
 
     const items = reservations.reduce((acc, reservation) => {
       let d = moment(reservation.event_start_date).format('YYYY-MM-DD');
@@ -69,7 +60,7 @@ export default class MyReservationsScene extends Component {
       let endTime = endDate.format('HH:mm');
 
       return (
-        <TouchableHighlight style={[styles.item, {height: item.height, backgroundColor: '#ffffff'}]} onPress={item => navigateTo('Event', eventId)}>
+        <TouchableHighlight style={[styles.item, {height: item.height, backgroundColor: '#ffffff'}]} onPress={item => navigate('Event', eventId)}>
           <View>
             <View style={{flex:1,display:'flex',flexDirection:'row',marginBottom:12,width:"100%"}}>
               <Text style={{fontSize:14}}>{startTime} - {endTime}</Text>
@@ -84,11 +75,11 @@ export default class MyReservationsScene extends Component {
       <LoginModal
         onRequestClose={() => {
           this.closeLoginModal();
-          navigateTo('Programme');
+          this.props.navigation.navigate('Programme');
         }}
         onCreateAccount={() => {
           this.closeLoginModal();
-          navigateTo('CreateAccount');
+          this.props.navigation.navigate('CreateAccount');
         }}
         doConnect={(user) => this.doConnect(user)}
         modalVisible={loginModalVisible} />

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import MyReservationsScene from '../scenes/MyReservationsScene';
-import { loadReservations, login, loadEvent, navigateTo } from '../actions/actions';
+import { loadReservations, login, loadEvent } from '../actions/actions';
 import { isConnected } from '../state/container.js';
 
 var moment = require('moment');
@@ -28,11 +28,13 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     },
     onReservationPress(reservation) {
       return dispatch(loadEvent(reservation.event_id)).then(() => {
-        LudescoNavigator.navigateTo({title:'event', id:reservation.event_id});
+        this.ownProps.navigation.navigate({title:'Event', id:reservation.event_id});
       });
     },
-    navigateTo(routeName, eventId) {
-      dispatch(navigateTo(routeName, {eventId}))
+    navigate : function(routeName, eventId) {
+      dispatch(loadEvent(eventId)).then(() => {
+        ownProps.navigation.navigate(routeName, {eventId});
+      })
     }
   }
 }

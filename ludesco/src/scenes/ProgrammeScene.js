@@ -46,10 +46,10 @@ export default class ProgrammeScene extends Component {
       events,
       onEventClick,
       onDayClick,
-      navigateTo,
+      navigate,
       hasReservationFor
     } = this.props;
-		  return <ProgrammeScrollView onEventClick={onEventClick} navigateTo={navigateTo} events={events} hasReservationFor={hasReservationFor} />
+		  return <ProgrammeScrollView onEventClick={onEventClick} navigate={navigate} events={events} hasReservationFor={hasReservationFor} />
     }
 }
 
@@ -67,11 +67,11 @@ class EventView extends Component {
             }
       }
 
-      const {item, hasReservationFor, navigateTo} = this.props;
+      const {item, hasReservationFor, navigate} = this.props;
       let eventId = item.id;
       let categories = item.categories.filter(c => c!='Français');
       const v = ICONES_MAPPING[categories[0]]
-      return (<TouchableHighlight style={[styles.item, {height: item.height, backgroundColor: hasReservationFor(item) ? '#ccffcc' : '#ffffff'}]} onPress={item => navigateTo('Event', eventId)}>
+      return (<TouchableHighlight style={[styles.item, {height: item.height, backgroundColor: hasReservationFor(item) ? '#ccffcc' : '#ffffff'}]} onPress={item => navigate('Event', eventId)}>
         <View>
           <View style={{flex:1,display:'flex',flexDirection:'row',marginBottom:12,width:"100%"}}>
             <Text style={{fontSize:14}}>{item.startTime} - {item.endTime}</Text>
@@ -92,7 +92,7 @@ class ProgrammeScrollView extends Component {
     const {
       events,
       onEventClick,
-      navigateTo,
+      navigate,
       hasReservationFor
     } = this.props;
 
@@ -118,7 +118,7 @@ class ProgrammeScrollView extends Component {
               selected={'2019-03-15'}
               minDate={'2019-03-15'}
               maxDate={'2019-03-17'}
-              renderItem={(item, firstItemInDay) => <EventView item={item} hasReservationFor={hasReservationFor} navigateTo={navigateTo} />}
+              renderItem={(item, firstItemInDay) => <EventView item={item} hasReservationFor={hasReservationFor} navigate={navigate} />}
               renderEmptyDate={() => {return (<View />);}}
               renderKnob={() => {return (<View />);}}
               firstDay={1}

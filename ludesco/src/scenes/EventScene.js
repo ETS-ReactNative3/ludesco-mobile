@@ -26,7 +26,7 @@ export default class EventScene extends Component {
       .then((r) => {
           if(r) {
             setTimeout(() => {
-              this.closeLoginModal();
+              //this.closeLoginModal();
             }, 500);
           }
       });
@@ -51,11 +51,11 @@ export default class EventScene extends Component {
     }
   }
   render() {
-    const { event, text, hasReservation, unsubscribe, navigateTo } = this.props;
+    const { event, text, hasReservation, unsubscribe } = this.props;
     const { subscribeModalVisible, loginModalVisible } = this.state;
 
     return <ScrollView style={styles.scrollView}>
-              <LoginModal modalVisible={loginModalVisible} doConnect={(user) => this.doConnect(user)} onCreateAccount={() => {navigateTo('CreateAccount'); this.closeLoginModal()}} onRequestClose={() => this.closeLoginModal()} />
+              <LoginModal modalVisible={loginModalVisible} doConnect={(user) => this.doConnect(user)} onCreateAccount={() => {this.props.navigation('CreateAccount'); this.closeLoginModal()}} onRequestClose={() => this.closeLoginModal()} />
               <Event event={event} hasReservation={hasReservation} askSubscribe={() => this.askSubscribe()} askUnsubscribe={() => this.unsubscribe()} />
             </ScrollView>;
   }

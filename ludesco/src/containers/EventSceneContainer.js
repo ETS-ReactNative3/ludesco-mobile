@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import EventScene from '../scenes/EventScene.js';
-import { loadEvent, login, loadReservations, subscribeEvent, unsubscribeEvent, navigateTo } from '../actions/actions.js';
+import { loadEvent, login, loadReservations, subscribeEvent, unsubscribeEvent  } from '../actions/actions.js';
 import store, { isConnected } from '../state/container.js';
 import { hasReservationsFor } from '../domain/event';
 
@@ -17,17 +17,21 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     doConnect(event, user) {
       return dispatch(login(user))
-        .then(() => dispatch(loadReservations()))
-        .then(() => {
-          const {profile} = store.getState();
-          if(!hasReservationsFor(event, profile.reservations)) {
-            return dispatch(subscribeEvent({user_id: profile.user.id, event_id: event.id}));
+        .then((result) => {
+            if(result) {
+            dispatch(loadReservations())
+            .then(() => {
+              const {profile} = store.getState();
+              if(!hasReservationsFor(event, profile.reservations)) {
+                return dispatch(subscribeEvent({user_id: profile.user.id, event_id: event.id}));
+              }
+            })
+            .then(() => dispatch(loadReservations()))
+            .then(() => dispatch(loadEvent(event.id)))
+            .then(() => true)
+            .catch(() => false)
           }
-        })
-        .then(() => dispatch(loadReservations()))
-        .then(() => dispatch(loadEvent(event.id)))
-        .then(() => true)
-        .catch(() => false);
+        });
     },
     subscribe : function(subscription) {
       return dispatch(subscribeEvent(subscription))
@@ -38,9 +42,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       return dispatch(unsubscribeEvent(unsubscription))
         .then((reservations) => dispatch(loadReservations()))
         .then(() => dispatch(loadEvent(unsubscription.event_id)));
-    },
-    navigateTo(routeName) {
-      return dispatch(navigateTo(routeName));
     }
   }
 }
