@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
-import CreateAccountScene from '../scenes/CreateAccountScene.js';
+import CreateAccountScene from '../scenes/CreateAccountScene';
 
-const CreateAccountSceneContainer = connect()(CreateAccountScene)
+const CreateAccountSceneContainer = connect()(CreateAccountScene);
 
-export default CreateAccountSceneContainer
+export default CreateAccountSceneContainer;

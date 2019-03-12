@@ -1,31 +1,31 @@
 import { NavigationActions } from 'react-navigation';
 
-let _navigator;
-let _drawer;
+let navigator;
+let drawer;
 
 function setTopLevelNavigator(navigatorRef) {
-  _navigator = navigatorRef;
+  navigator = navigatorRef;
 }
 
 function setTopLevelDrawer(drawerRef) {
-  _drawer = drawerRef;
+  drawer = drawerRef;
 }
 
 function navigate(routeName, params) {
-  _navigator.dispatch(
+  navigator.dispatch(
     NavigationActions.navigate({
       routeName,
       params,
-    })
+    }),
   );
 }
 
 function openDrawer() {
-  _drawer.openDrawer();
+  drawer.openDrawer();
 }
 
 function closeDrawer() {
-  _drawer.closeDrawer();
+  drawer.closeDrawer();
 }
 
 // add other navigation functions that you need and export them
@@ -35,5 +35,5 @@ export default {
   setTopLevelNavigator,
   openDrawer,
   closeDrawer,
-  setTopLevelDrawer
+  setTopLevelDrawer,
 };

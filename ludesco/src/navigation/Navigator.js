@@ -1,61 +1,64 @@
-import React, { Component } from 'react';
-import { Text } from 'react-native';
-import { Toolbar, Subheader, Avatar, Drawer, Divider, COLOR, TYPO, ThemeProvider, ThemeContext, getTheme } from 'react-native-material-ui';
-import { StackNavigator, AppNavigator, NavigationActions, createStackNavigator, createAppContainer } from 'react-navigation';
-import NavigationService from '../navigation/NavigationService.js';
-import ProgrammeSceneContainer from '../containers/ProgrammeSceneContainer.js';
-import EventSceneContainer from '../containers/EventSceneContainer.js';
-import MyReservationsSceneContainer from '../containers/MyReservationsSceneContainer.js';
-import StudioSceneContainer from '../containers/StudioSceneContainer.js';
-import CreateAccountContainer from '../containers/CreateAccountContainer.js';
-import store from '../state/container.js';
+import React from 'react';
+import { Toolbar } from 'react-native-material-ui';
+import { createStackNavigator, createAppContainer } from 'react-navigation';
+import NavigationService from './NavigationService';
+import ProgrammeSceneContainer from '../containers/ProgrammeSceneContainer';
+import EventSceneContainer from '../containers/EventSceneContainer';
+import MyReservationsSceneContainer from '../containers/MyReservationsSceneContainer';
+import StudioSceneContainer from '../containers/StudioSceneContainer';
+import CreateAccountContainer from '../containers/CreateAccountContainer';
+import store from '../state/container';
 
 function createToolbar(titre) {
-  return <Toolbar leftElement="menu"
+  return (
+    <Toolbar
+      leftElement="menu"
       centerElement={titre}
       searchable={{
         autoFocus: true,
         placeholder: 'Rechercher',
-        onChangeText: (search) => {store.dispatch({type:'SEARCH',search:search})}
+        onChangeText: (search) => { store.dispatch({ type: 'SEARCH', search }); },
       }}
       onLeftElementPress={() => NavigationService.openDrawer()}
-          icon='menu'
-          rightIconStyle={{
-              margin: 10
-          }} />;
+      icon="menu"
+      rightIconStyle={{ margin: 10 }}
+    />
+  );
 }
 
 export const RootStack = createStackNavigator({
-  Programme : {
+  Programme: {
     screen: ProgrammeSceneContainer,
-    navigationOptions: ({ navigation }) => ({
-      header: createToolbar("Programme")
-    })
+    navigationOptions: () => ({
+      header: createToolbar('Programme'),
+    }),
   },
-  Agenda : {
+  Agenda: {
     screen: MyReservationsSceneContainer,
-    navigationOptions: ({ navigation }) => ({
-      header: createToolbar("Agenda")
-    })
+    navigationOptions: () => ({
+      header: createToolbar('Agenda'),
+    }),
   },
-  Studio : {
+  Studio: {
     screen: StudioSceneContainer,
-    navigationOptions: ({ navigation }) => ({
-      header: createToolbar("Le Studio")
-    })
+    navigationOptions: () => ({
+      header: createToolbar('Le Studio'),
+    }),
   },
-  Event : {
+  Event: {
     screen: EventSceneContainer,
-    navigationOptions: ({ navigation }) => ({
-      header: createToolbar("Programme")
-    })
+    navigationOptions: () => ({
+      header: createToolbar('Programme'),
+    }),
   },
-  CreateAccount : {
+  CreateAccount: {
     screen: CreateAccountContainer,
-    navigationOptions: ({ navigation }) => ({
-      header: createToolbar("Créer un compte")
-    })
-  }
+    navigationOptions: () => ({
+      header: createToolbar('Créer un compte'),
+    }),
+  },
 });
 
-export default RootNavigator = createAppContainer(RootStack);
+const RootNavigator = createAppContainer(RootStack);
+
+export default RootNavigator;

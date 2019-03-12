@@ -24,7 +24,7 @@
     ],
     "android" : {
       "package": "ch.ludesco",
-      "versionCode" : 13
+      "versionCode" : 14
     },
     "ios": {
       "supportsTablet": true

@@ -1,25 +1,21 @@
 import { connect } from 'react-redux';
 import { loadStudioEvents } from '../actions/actions';
-import StudioScene from '../scenes/StudioScene.js';
+import StudioScene from '../scenes/StudioScene';
 
 
-const mapStateToProps = (state, ownProps) => {
-  return {
-    events : state.studioEvents
-  }
-}
+const mapStateToProps = state => ({
+  events: state.studioEvents,
+});
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    beforeDisplay() {
-      dispatch(loadStudioEvents())
-    }
-  }
-}
+const mapDispatchToProps = dispatch => ({
+  beforeDisplay() {
+    dispatch(loadStudioEvents());
+  },
+});
 
 const StudioSceneContainer = connect(
   mapStateToProps,
-  mapDispatchToProps
-)(StudioScene)
+  mapDispatchToProps,
+)(StudioScene);
 
-export default StudioSceneContainer
+export default StudioSceneContainer;

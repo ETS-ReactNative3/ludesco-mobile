@@ -1,4 +1,8 @@
-var moment = require('moment');
+const moment = require('moment');
+
+export function capitalize(s) {
+  return s.charAt(0).toUpperCase() + s.substring(1);
+}
 
 export function fmtDayTime(isoDate) {
   return capitalize(moment(isoDate).format('dddd [à] HH:mm'));
@@ -14,8 +18,4 @@ export function fmtNow() {
 
 export function datetimeToISO(s) {
   return moment(s, 'DD.MM.YYYY HH:mm').toISOString();
-}
-
-export function capitalize(s) {
-  return s.charAt(0).toUpperCase() + s.substring(1);
 }

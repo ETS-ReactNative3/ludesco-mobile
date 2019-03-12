@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { ScrollView } from 'react-native';
-import { LoginModal } from '../components/loginModal';
+import LoginModal from '../components/LoginModal';
 import Event from '../components/Event';
 import styles from '../components/styles';
 
