@@ -71,7 +71,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  bebeforeDisplay(day, categories) {
+  beforeDisplay(day, categories) {
     dispatch(loadEvents(day, categories));
   },
   onDayClick(day) {
